@@ -119,6 +119,27 @@ for i in range(0,features):
 		if i != j:
 			print(str(i),str(j),len(finin[i]))
 			print(finin[i])
+
+output = open("test.ehabd","w+")
+for i in range(0,features):
+	for j in range(i,features):
+		if i != j:
+			output.write(str(i) + ":" + str(j) + ":" + str(len(finin[i])))
+			if i != features - 2:
+				output.write(",")
+			else:
+				output.write("\n")
+
+for i in range(0,len(finin)):
+	for j in range(0,len(finin[i])):
+		for k in range(0,len(finin[i][j])):
+			output.write(str(finin[i][j][k]))
+			if k != len(finin[i][j]) - 1:
+				output.write(':')
+		if j != len(finin[i]) - 1:
+			output.write(",")
+	output.write('\n')
+
 def findAndPlot():
         list = rankAll()
         sortedList = sortList(list)
