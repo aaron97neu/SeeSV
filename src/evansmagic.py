@@ -10,15 +10,17 @@ radius = distThresh
 #open file
 data = open(inputTextFile)
 
-#Create set with format format time,latitude,longitude,velocity from download.py style
-def Parse(s):
-	tem = s.split(",")
-	return tem
 
-def distance(point1, point2, metric1, metric2):
-	#latlong1 = (float(point1[1]),float(point1[2]))
-	#latlong2 = (float(point2[1]),float(point2[2]))
-	return math.sqrt(math.pow(float(point1[metric1]) - float(point2[metric1]),2) + math.pow(float(point1[metric2]) - float(point2[metric2]),2))
+#Create set with format format time,latitude,longitude,velocity from download.py style
+def Parse(s,feature1,feature2):
+	tem = s.split(",")
+	ohNaNa = []
+	ohNaNa.append(tem[feature1])
+	ohNaNa.append(tem[feature2])
+	return ohNaNa
+
+def distance(point1, point2):
+	return math.sqrt(math.pow(float(point1[0]) - float(point2[0]),2) + math.pow(float(point1[1]) - float(point2[1]),2))
 	#return great_circle(latlong1, latlong2).miles
 #test parse
 def testParse():
@@ -31,42 +33,42 @@ def testParse():
 		if "Number of entries: " in pointDataString:
 			break
 
-#testParse()
+pointDataString = ""
 
-def getAllPoints():
-	global numPoints, features
-	setOfAll = []
+def prime():
+	global numPoints, pointDataString, features
+	#testParse()
 	pointDataString = data.readline()
 	maxRange = int(pointDataString.split(",")[0])
 	numPoints = maxRange
-	features = int(pointDataString.split(",")[0])
+	features = int(pointDataString.split(",")[1])
 	pointDataString = data.readline()
+
+def getAllPoints(feature1,feature2):
+	global numPoints, pointDataString
+	setOfAll = []
 	#print pointDataString
-	for i in range(0,maxRange):
-		setOfAll.append(Parse(pointDataString))
+	for i in range(0,numPoints):
+		setOfAll.append(Parse(pointDataString,feature1,feature2))
 		pointDataString = data.readline()
 	return setOfAll
 
 #testAllPoints
 #print getAllPoints()
-print "Loading list..."
-pointlist = getAllPoints()
-print(len(pointlist))
-print "Loaded"
 
 #adds ranking to loaded list (finds num neighbors within range)
-def rankAll():
+def rankAll(points):
 	rankedPointz = []
-	for point in pointlist:
+	for point in points:
 		print "Running rank for point " + str(point[0]) + "..."
 		numNeighbors = 0
-		for point2 in pointlist:
-			if point != point2 and distance(point,point2,0,1) < distThresh:
+		for point2 in points:
+			if point != point2 and distance(point,point2) < distThresh:
 				numNeighbors = numNeighbors + 1
 				#iprint distance(point,point2)
 		point.append(numNeighbors)
 		rankedPointz.append(point)
-		print point[4]
+		print(point[2])
 	return rankedPointz
 
 #legacy
@@ -77,12 +79,12 @@ def sortList(points):
 	for point in points:
 		insert = False
 		for i in range(0,len(ranked_points)):
-			if distance(point,ranked_points[i],0,1) > radius:
+			if distance(point,ranked_points[i]) > radius:
 				ranked_points.insert(i, point)
-				print "Inserting " + point[0] + ": value=" + str(point[4]) +": At position " + str(i)
+				print "Inserting " + point[0] + ": value=" + str(point[2]) +": At position " + str(i)
 				insert = True
 				break
-			elif point[4] > ranked_points[i][4]:
+			elif point[2] > ranked_points[i][2]:
 				ranked_points.remove(ranked_points[i])
 				ranked_points.insert(i,point)
 				print "Replacing"
@@ -91,19 +93,32 @@ def sortList(points):
 
 	
 
-def reduce(points):
+def reduce(points,feature1,feature2):
 	newPointList = []
 	for point in points:
 		nah = True
 		for newPoint in newPointList:
-			if (point[4] <= newPoint[4] and distance(newPoint,point,0,1) < radius) or point[4] < 10:
+			if (point[2] <= newPoint[2] and distance(newPoint,point) < radius) or point[2] < 10:
 				nah = False
 		if nah:
 			newPointList.append(point)
 	return newPointList
 
-print reduce(sortList(rankAll()))
-								
+
+prime()
+finin = []
+for i in range(0,features):
+	for j in range(i,features):
+		if i != j:
+			finin.append(reduce(sortList(rankAll(getAllPoints(i,j))),i,j))
+			data.seek(0)
+			prime()
+
+for i in range(0,features):
+	for j in range(i,features):
+		if i != j:
+			print(str(i),str(j),len(finin[i]))
+			print(finin[i])
 def findAndPlot():
         list = rankAll()
         sortedList = sortList(list)
