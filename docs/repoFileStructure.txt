@@ -1,0 +1,19 @@
+Current repo file structure. Strucures denoted with a '*' are example file names
+
+|- src
+|   |- node_modules
+|   |- csvs
+|   |  |- csv1.csv*
+|   |  |- csv2.csv*
+|   |  |- csv3.csv*
+|   |- ehabds
+|   |  |- csv1.ehabd (Mirrors files in csv dir with .ehabd extension)
+|   |  |- csv2.ehabd
+|   |  |- csv3.ehand
+|   |- server.js (Backend nodejs code)
+|   |- index.html
+|   |- graph1.js*
+|   |- graph2.js*
+|
+|- docs
+    |- repoFileStrucure
