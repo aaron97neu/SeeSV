@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!--> <body style="background-color:lightslategray;"> <!-->
 	<style type="text/css">
 		* { font-family: Verdana, Arial, sans-serif; }
@@ -7,11 +9,14 @@
 		h1 { font-size: 32pt; }
 		p { font-size: 10pt; }
 	</style>
+  </head>
 <h1>Welcome to SeeSV!</h1>
 <p>Select a CSV file from the dropdown menu below!</p>
-<select>
-  <option value="CSV1">CSV1</option>
-  <option value="CSV2">CSV2</option>  
-</select>
+
+<div id="dropdown"></div>
+<script>
+  $("#dropdown").load("csvload");
+</script>
+
 </body>
 </html>
