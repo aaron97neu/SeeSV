@@ -1,8 +1,7 @@
 # SeeSV
-Big data statistics tuned for ML applications
+##### It's not about the size of your data, it's about how your reduce it
 
-This is a group project for Purdue CS252 Lab6
-
+### Big data statistics tuned for ML applications, accessed through a web client
 The purpose of SeeSV is to parse and analyze large data files used for machine learning, and display statistics about the datasets in a multiplatform webclient.
 
 #### Technologies we plan on using:  
@@ -15,4 +14,6 @@ Asus tinkerboard for machine learning testing
 #### Group Members:  
 Aaron Neustedter  
 Evan Paglieri  
-Daniel Krolopp  
+Daniel Krolopp
+
+###### This is a group project for Purdue CS252 Lab6
