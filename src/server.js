@@ -26,10 +26,13 @@ console.log('Serving all files in directory '+serveDir+'');
 
 //setup event listeners
 watcher
+  .on('ready', () => log('Initial scan complete. Ready for changes'))
+  .on('error', error => log(`Watcher error: ${error}`))
   .on('add', path => log(`File ${path} has been added`))
   .on('change', path => log(`File ${path} has been changed`))
   .on('unlink', path => log(`File ${path} has been removed`));
 
+/*
 // More possible events.
 watcher
   .on('addDir', path => log(`Directory ${path} has been added`))
@@ -44,4 +47,4 @@ watcher
 // argument when available: http://nodejs.org/api/fs.html#fs_class_fs_stats
 watcher.on('change', (path, stats) => {
   if (stats) console.log(`File ${path} changed size to ${stats.size}`);
-});
+});*/
