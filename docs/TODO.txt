@@ -1,0 +1,12 @@
+Aaron
+-Finish serving static webpages
+-Run Evan's scripts upon directory change
+-Report state (currently loading data or no?)
+
+Daniel
+-Dygraphs on frontend
+-Backend and integration
+
+Evan
+-EHABD scripts (Python script)
+-TSNE Manifold reduction & cart
