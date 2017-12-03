@@ -18,6 +18,7 @@ function getAllCSVs(){
 app = express();
 
 app.use('/', express.static(__dirname + '/'));
+app.use('/login', express.static(__dirname + '/login.html'));
 
 /*  Frontend queries /csvload to get the CSV list
  */
