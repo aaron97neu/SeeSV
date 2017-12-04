@@ -1,21 +1,4 @@
-/*  This generates HTML that will display in browser listing all CSV files */
-function getAllCSVs(){
-	var files = fs.readdirSync('../sampleData');
-	var dropdownModule = "";
-	for(i = 0; i < files.length; i++){
-		var option = "\n<li>" + files[i] + "</li>";
-		dropdownModule += option;
-	}
-	return dropdownModule;
-}
-
-
-/*  Frontend queries /csvload to get the CSV list*/
-app.get('/csvload', function(req, res){
-  res.send(getAllCSVs());
-  res.end();
-});
-
+var fs = require("fs");
 var http = require("http");
 var express = require("express");
 var path = require("path");
@@ -42,6 +25,24 @@ app.listen(port);
 console.log('Server running on port ' + port);
 console.log('Serving all files in directory '+serveDir+'');
 
+/*  This generates HTML that will display in browser listing all CSV files */
+function getAllCSVs(){
+	var files = fs.readdirSync('../sampleData');
+	var dropdownModule = "";
+	for(i = 0; i < files.length; i++){
+		var option = "\n<li>" + files[i] + "</li>";
+		dropdownModule += option;
+	}
+	return dropdownModule;
+}
+
+/*  Frontend queries /csvload to get the CSV list*/
+app.get('/csvload', function(req, res){
+  res.send(getAllCSVs());
+  res.end();
+});
+
+
 //setup event listeners
 watcher
   .on('ready', () => log('Initial scan complete. Ready for changes'))
@@ -66,4 +67,3 @@ watcher
 watcher.on('change', (path, stats) => {
   if (stats) console.log(`File ${path} changed size to ${stats.size}`);
 });*/
->>>>>>> master
