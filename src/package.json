@@ -1,8 +1,8 @@
 {
-  "name": "src",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "SeeSV",
+  "version": "0.1.0",
+  "description": "The purpose of SeeSV is to parse and analyze large data files used for machine learning, and display statistics about the datasets in a multiplatform webclient.",
+  "main": "server.js",
   "dependencies": {
     "chokidar": "^1.7.0",
     "dygraphs": "^2.0.0",
@@ -16,8 +16,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "SeeSV"
+    "url": "https://github.com/aaron97neu/SeeSV"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Aaron Neustedter, Evan Paglieri, Daniel Krolopp",
+  "license": "GNU GPL 3.0"
 }
