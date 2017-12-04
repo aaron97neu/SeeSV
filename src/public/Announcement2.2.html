@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Apache HTTP Server Project</title>
+<style type="text/css">
+  body {
+    background: white;
+    color: #111111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 8px;
+    padding-right: 8px;
+    max-width: 45em;
+  }
+
+  a {
+    color: blue;
+  }
+
+  a:visited {
+    color: #000080;
+  }
+
+  a:active {
+    color: red;
+  }
+
+  div.banner {
+    background: rgb(48, 69, 88);
+    margin-top: -28px;
+    margin-bottom: 1.5em;
+    height: 28px;
+  }
+
+  p, ul {
+    line-height: 1.3em;
+  }
+
+  li {
+    margin-bottom: 0.4em;
+  }
+</style>
+</head>
+
+<body>
+<img src="httpd_logo_wide_new.png" alt="" />
+<div class="banner"></div>
+
+<h1>
+                       Apache HTTP Server 2.2.34 Released
+</h1>
+<p>
+   July 11, 2017
+</p>
+<p>
+   The Apache Software Foundation and the Apache HTTP Server Project
+   announce the release of version 2.2.34 of the Apache HTTP Server
+   ("Apache"), the final maintenance release of the 2.2 series. No
+   further 2.2 releases are anticipated. This version of Apache is
+   principally a security and bug fix maintenance release.
+</p>
+<p>
+   We consider the current Apache HTTP Server 2.4 release to be the best
+   version of Apache available, and encourage every user of 2.2 and all
+   prior versions to upgrade. This final 2.2 release is offered for those
+   unable to upgrade at this moment.
+</p>
+<p>
+   Take note that Apache Web Server Project will provide no future release 
+   of the 2.2.x series, although some security patches may be published
+   through December of 2017. These will be collected at the URL;
+</p>
+<dl>
+  <dd><a href="http://www.apache.org/dist/httpd/patches/apply_to_2.2.34/"
+              >http://www.apache.org/dist/httpd/patches/apply_to_2.2.34/</a></dd>
+</dl>
+<p>
+   No further maintenance patches of 2.2.x will be published. Users are
+   strongly encouraged to promptly complete their transitions to the 
+   2.4.x flavor of httpd to receive any future benefit from the user
+   community or the Apache HTTP Server project developers.
+</p>
+<p>
+   For further details about the currently supported release, see:
+</p>
+<dl>
+  <dd><a href="http://www.apache.org/dist/httpd/Announcement2.4.html"
+              >http://www.apache.org/dist/httpd/Announcement2.4.html</a></dd>
+</dl>
+<p>
+   Apache HTTP Server 2.4 and 2.2.34 are available for download from:
+</p>
+<dl>
+  <dd><a href="http://httpd.apache.org/download.cgi"
+              >http://httpd.apache.org/download.cgi</a></dd>
+</dl>
+<p>
+   Please see the CHANGES_2.2 file, linked from the download page, for a
+   full list of changes. A condensed list, CHANGES_2.2.34 includes only
+   those changes introduced since the prior 2.2 release. A summary of all 
+   of the security vulnerabilities addressed in this and earlier releases 
+   is available:
+</p>
+<dl>
+  <dd><a href="http://httpd.apache.org/security/vulnerabilities_22.html"
+              >http://httpd.apache.org/security/vulnerabilities_22.html</a>
+  </dd>
+</dl>
+<p>
+   Note that the Apache HTTP Server project will discontinue evaluations
+   and corresponding advisories to this resource effective January, 2018.
+</p>
+<p>
+   This release includes the Apache Portable Runtime (APR) version 1.5.2
+   and APR Utility Library (APR-util) version 1.5.4, bundled with the tar
+   and zip distributions. The APR libraries libapr and libaprutil (and
+   on Win32, libapriconv version 1.2.1) must all be updated to ensure
+   binary compatibility and address many known security and platform bugs.
+   APR version 1.5 and APR-util version 1.5 represent minor version upgrades
+   from earlier httpd 2.2 source distributions.
+</p>
+<p>
+   Note this package also includes very stale and known-vulnerable versions
+   of the Expat [<a href="http://expat.sourceforge.net/"
+        >http://expat.sourceforge.net/</a>] and PCRE [<a
+        href="http://www.pcre.org/">http://www.pcre.org/</a>]
+   packages. Users are strongly encouraged to first install the most recent
+   versions of these components (of PCRE 8.x, not PCRE2 10.x at this time.)
+</p>
+<p>
+   This release builds on and extends the Apache 2.0 API and is superceeded
+   by the Apache 2.4 API. Modules written for Apache 2.2 will need to be
+   recompiled in order to run with Apache 2.4, and most will require minimal
+   or no source code changes.
+</p>
+</body>
+</html>
