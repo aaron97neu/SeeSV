@@ -9,7 +9,7 @@ var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
   persistent: true
 });
 var log = console.log.bind(console);
-
+var ready = 0;
 //run initial python code
 
 
@@ -17,7 +17,7 @@ var log = console.log.bind(console);
 app = express();
 var serveDir = path.join(__dirname, 'public'); 
 app.use(express.static(serveDir));
-var port = 81; // Change this
+var port = 82; // Change this
 
 //start listening
 app.listen(port);
@@ -26,19 +26,21 @@ console.log('Serving all files in directory '+serveDir+'');
 
 //setup event listeners
 watcher
-  .on('ready', () => log('Initial scan complete. Ready for changes'))
+  .on('ready', () => {
+    log('Initial scan complete. Ready for changes');
+    ready = 1;
+  })
   .on('error', error => log(`Watcher error: ${error}`))
   .on('add', path => log(`File ${path} has been added`))
   .on('change', path => log(`File ${path} has been changed`))
   .on('unlink', path => log(`File ${path} has been removed`));
 
+
 /*
-// More possible events.
+// Chokidar more possible events.
 watcher
   .on('addDir', path => log(`Directory ${path} has been added`))
   .on('unlinkDir', path => log(`Directory ${path} has been removed`))
-  .on('error', error => log(`Watcher error: ${error}`))
-  .on('ready', () => log('Initial scan complete. Ready for changes'))
   .on('raw', (event, path, details) => {
     log('Raw event info:', event, path, details);
   });
