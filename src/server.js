@@ -18,7 +18,7 @@ var log = console.log.bind(console);
 app = express();
 var serveDir = path.join(__dirname, 'public'); 
 app.use(express.static(serveDir));
-var port = 81; // Change this
+var port = 82; // Change this
 
 //start listening
 app.listen(port);
@@ -27,7 +27,7 @@ console.log('Serving all files in directory '+serveDir+'');
 
 /*  This generates HTML that will display in browser listing all CSV files */
 function getAllCSVs(){
-	var files = fs.readdirSync('../sampleData');
+	var files = fs.readdirSync('csvs');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
 		var option = "\n<li>" + files[i] + "</li>";
