@@ -3,6 +3,22 @@ var http = require("http");
 var express = require("express");
 var path = require("path");
 var chokidar = require("chokidar");
+var mongoose = require("mongoose");
+var passport = require("passport");
+var flash = require("connect-flash");
+
+var morgan = require("morgan");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var session = require("express-session");
+
+var configDB = require("./config/database.js");
+
+var port = process.env.PORT || 80; // Either the env var PORT or 80
+
+//setup db
+mongoose.connect(configDB.url);
+
 
 //setup file watcher
 var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
@@ -18,7 +34,6 @@ var log = console.log.bind(console);
 app = express();
 var serveDir = path.join(__dirname, 'public'); 
 app.use(express.static(serveDir));
-var port = 82; // Change this
 
 //start listening
 app.listen(port);
