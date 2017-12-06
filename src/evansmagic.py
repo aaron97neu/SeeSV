@@ -129,16 +129,13 @@ for i in range(0,features):
 				output.write(",")
 			else:
 				output.write("\n")
-
+print(finin)
 for i in range(0,len(finin)):
 	for j in range(0,len(finin[i])):
-		for k in range(0,len(finin[i][j])):
-			output.write(str(finin[i][j][k]))
-			if k != len(finin[i][j]) - 1:
-				output.write(':')
-		if j != len(finin[i]) - 1:
-			output.write(",")
-	output.write('\n')
+		for k in range(0,len(finin)):
+			if j < len(finin[k]):
+				output.write(str(finin[k][j][0]) + ";" + str(finin[k][j][1]))
+		output.write('\n')
 
 def findAndPlot():
         list = rankAll()
