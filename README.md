@@ -9,13 +9,13 @@ dygraphs for dispaying the data
 nodejs backend  
 Aaron's personal server for prototying/hosting  
 
-### Libraries and resources used:
+#### Libraries and resources used:
 Many nodejs modules (see package.json)
 This amazing tutorial for nodejs based authentication: <https://scotch.io/tutorials/easy-node-authentication-setup-and-local>
 (Wherever daniel got those html templates)
 
 #### Group Members:  
-Aaron Neustedter  
+Aaron Neustedter
 Evan Paglieri  
 Daniel Krolopp
 
