@@ -19,6 +19,8 @@ var port = process.env.PORT || 80; // Either the env var PORT or 80
 //setup db
 mongoose.connect(configDB.url);
 
+// Passport
+// require('./config/database.js')(passport)
 
 //setup file watcher
 var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
@@ -30,15 +32,31 @@ var log = console.log.bind(console);
 //run initial python code
 
 
-//setup server
+//setup server static
+/*
 app = express();
 var serveDir = path.join(__dirname, 'public'); 
 app.use(express.static(serveDir));
+*/
+
+app.use(morgan('dev')); // log requests to stdout
+app.use(cookieParser()); // read cookies
+app.use(bodyParser()); // get info from html forms
+
+app.set('view engine', 'ejs'); //use ejs for templating
+
+//pasport setup
+app.use(session({ secret: 'STAIRS!? NOOOOOOOOOOOOO!'}));
+app.use(passport.initialize());
+app.use(passport.session()); //persistent login
+app.use(flash()); // use connect-flash
+
+require(./app/routes.js)(app, passport); //load routes and pass into app and passport
 
 //start listening
 app.listen(port);
 console.log('Server running on port ' + port);
-console.log('Serving all files in directory '+serveDir+'');
+//console.log('Serving all files in directory '+serveDir+'');
 
 /*  This generates HTML that will display in browser listing all CSV files */
 function getAllCSVs(){
