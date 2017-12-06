@@ -57,4 +57,31 @@ module.exports = function(passport) {
       });
     });
   }));
+
+  //local login. Use same template as signup
+
+  passport.use('local-login', new LocalStrategy({
+    //override username with email
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true //allowing to send whole request to callback
+  },
+  function(req, email, password, done) {
+    //find user with said email
+    User.findOne({ 'local.email' : email}, function(err, user) {
+      //return errors
+      if(err)
+        return done(err);
+      
+      //return if no user exists
+      if(!user)
+        return done(null, false, req.flash('loginMessage', 'No user found')); //req.flash sets flashdata via connect-flash
+      // return if username is correct but password is wrong
+      if(!user.validPassword(password))
+        return done(null, false, req.flash('loginMessage', 'Wrong password')); //setting login message to appropiate problem with the login
+
+      //if everything works
+      return done(null, user);
+    });
+  }));
 };
