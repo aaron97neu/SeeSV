@@ -18,11 +18,15 @@ module.exports = function(app, passport){
   });
 
   //Process signup
-  //app.post('/signup', passport);
+  app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect : '/profile', //redirect to secure area
+    failureRedirect : '/signup', // Send back to signup upon error
+    failureFlash : true //alowing flash messaging
+  }));
 
   //profile section. Use middleware to verify user is logged in
   app.get('/profile', isLoggedIn, function(req, res){
-    res.render('profile.ejs, {
+    res.render('profile.ejs', {
       user : req.user //get user from template
     });
   });

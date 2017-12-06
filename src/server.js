@@ -20,7 +20,7 @@ var port = process.env.PORT || 80; // Either the env var PORT or 80
 mongoose.connect(configDB.url);
 
 // Passport
-// require('./config/database.js')(passport)
+require('./config/passport')(passport)
 
 //setup file watcher
 var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
@@ -33,9 +33,9 @@ var log = console.log.bind(console);
 
 
 //setup server static
-/*
+
 app = express();
-var serveDir = path.join(__dirname, 'public'); 
+/*var serveDir = path.join(__dirname, 'public'); 
 app.use(express.static(serveDir));
 */
 
@@ -51,7 +51,7 @@ app.use(passport.initialize());
 app.use(passport.session()); //persistent login
 app.use(flash()); // use connect-flash
 
-require(./app/routes.js)(app, passport); //load routes and pass into app and passport
+require('./app/routes.js')(app, passport); //load routes and pass into app and passport
 
 //start listening
 app.listen(port);

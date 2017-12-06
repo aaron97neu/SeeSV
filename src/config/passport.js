@@ -1,6 +1,6 @@
 //requires:
 var LocalStrategy = require('passport-local').Strategy;
-var User = requuire('../app/models/user');
+var User = require('../app/models/user');
 
 module.exports = function(passport) {
   
@@ -8,12 +8,12 @@ module.exports = function(passport) {
 
   //serialize(?) the user
   passport.serializeUser(function(user, done) {
-    don(null, user.id);
+    done(null, user.id);
   });
 
   //deserialize(?) the user
-  passport.deserializeUserUser(function(id, done) {
-    User.findById(id, finction(err, user) {
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
       done(err, user);
     });
   });
@@ -24,7 +24,7 @@ module.exports = function(passport) {
     //overriding default username with email
     usernameField : 'email',
     passwordField : 'password',
-    passReqToCallback : True // passes entire request to callback
+    passReqToCallback : true // passes entire request to callback
   },
   function(req, email, password, done) {
     
