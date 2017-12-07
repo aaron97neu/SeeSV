@@ -44,20 +44,24 @@
 
 				    // containing div
 					document.getElementById("graph"),
-					"../csvs/temperatures.csv",
-					{}
-					// CSV or path to a CSV file.
-					//"Date,Temperature\n" +
-					//"2008-05-07,75\n" +
-					//"2008-05-08,70\n" +
-					//"2008-05-09,80\n"
-
+					
+					"csvs/temperatures.csv",
+					
+					{
+						legend: 'always'
+					}
 				    );
 				</script>
 			</div>
 		</div>
     </div>
-
-</div>
+	<div class="row">
+		
+        <!-- LOCAL INFORMATION -->
+		<div class="col-sm-6"><div class="well">This is a placeholder</div></div>
+		<div class="col-sm-6">
+			<div class="well"><img src="test.svg"></div>
+		</div>
+	</div>
 </body>
 </html>

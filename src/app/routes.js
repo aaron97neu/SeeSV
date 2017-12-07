@@ -4,6 +4,46 @@ module.exports = function(app, passport){
     res.render('index.ejs');
   });
 
+  //Serves CSV files
+  app.get('/csvs/:name', function(req, res) {
+    var options = {
+      root: __dirname + '/../csvs/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+    var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+	    if (err) {
+          console.log(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+     });
+});
+
+//Serbes SVG files
+app.get('/svgs/:name', function(req, res) {
+    var options = {
+      root: __dirname + '/../svgs/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+    var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+	    if (err) {
+          console.log(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+     });
+});
+
   // Login form
   app.get('/login', function(req, res) {
     res.render('login.ejs', {message: req.flash('loginMessage') });
