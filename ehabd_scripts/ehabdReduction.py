@@ -1,17 +1,15 @@
 import sys
 import math
 
+#global variables
 numPoints = 0
 features = 0
-
 inputTextFile = sys.argv[1]
-distThresh = 1
+distThresh = 10000
 radius = distThresh
-#open file
 data = open(inputTextFile)
 
-
-#Create set with format format time,latitude,longitude,velocity from download.py style
+#Takes a string of format value1,value2,value3 and returns an array with values of deisred features
 def Parse(s,feature1,feature2):
 	tem = s.split(",")
 	ohNaNa = []
@@ -19,42 +17,31 @@ def Parse(s,feature1,feature2):
 	ohNaNa.append(tem[feature2])
 	return ohNaNa
 
+#Calculates distance between two points
 def distance(point1, point2):
 	return math.sqrt(math.pow(float(point1[0]) - float(point2[0]),2) + math.pow(float(point1[1]) - float(point2[1]),2))
-	#return great_circle(latlong1, latlong2).miles
-#test parse
-def testParse():
-	pointDataString = data.readline()
-	print pointDataString
-	while pointDataString != None:
-		print Parse(pointDataString)
-		data.readline()
-		pointDataString = data.readline()
-		if "Number of entries: " in pointDataString:
-			break
 
-pointDataString = ""
-
+#Get pointDataString in correct format?
 def prime():
-	global numPoints, pointDataString, features
-	#testParse()
+	global data, numPoints, features
+	data.readline()
 	pointDataString = data.readline()
-	maxRange = int(pointDataString.split(",")[0])
+	maxRange = int(pointDataString.split(",")[1])
 	numPoints = maxRange
-	features = int(pointDataString.split(",")[1])
-	pointDataString = data.readline()
+	features = int(pointDataString.split(",")[0])
+	data.seek(0)	
 
+#Get all data points as an array from file
 def getAllPoints(feature1,feature2):
-	global numPoints, pointDataString
+	global numPoints, pointDataString, data
 	setOfAll = []
-	#print pointDataString
-	for i in range(0,numPoints):
-		setOfAll.append(Parse(pointDataString,feature1,feature2))
-		pointDataString = data.readline()
+	data.readline()
+	dataString = data.readline()
+	while dataString != "":
+		setOfAll.append(Parse(dataString,feature1,feature2))
+		dataString = data.readline()
 	return setOfAll
 
-#testAllPoints
-#print getAllPoints()
 
 #adds ranking to loaded list (finds num neighbors within range)
 def rankAll(points):
@@ -68,7 +55,6 @@ def rankAll(points):
 				#iprint distance(point,point2)
 		point.append(numNeighbors)
 		rankedPointz.append(point)
-		print(point[2])
 	return rankedPointz
 
 #legacy
@@ -104,15 +90,14 @@ def reduce(points,feature1,feature2):
 			newPointList.append(point)
 	return newPointList
 
-
 prime()
+#Actually do stuff
 finin = []
 for i in range(0,features):
 	for j in range(i,features):
 		if i != j:
 			finin.append(reduce(sortList(rankAll(getAllPoints(i,j))),i,j))
 			data.seek(0)
-			prime()
 
 for i in range(0,features):
 	for j in range(i,features):
@@ -120,7 +105,10 @@ for i in range(0,features):
 			print(str(i),str(j),len(finin[i]))
 			print(finin[i])
 
-output = open("test.ehabd","w+")
+inputFileName = inputTextFile.split("/")
+inputFileName = inputFileName[len(inputFileName)-1]
+inputFileName = inputFileName.split(".")[0]
+output = open("EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
 	for j in range(i,features):
 		if i != j:
@@ -129,7 +117,6 @@ for i in range(0,features):
 				output.write(",")
 			else:
 				output.write("\n")
-print(finin)
 for i in range(0,len(finin)):
 	for j in range(0,len(finin[i])):
 		for k in range(0,len(finin)):
@@ -143,3 +130,15 @@ def findAndPlot():
         reduct = reduce(sortedList)
         print("\n\n\n")
 
+"""
+--------Test Methods-------
+"""
+
+#test parse
+def testParse():
+	pointDataString = data.readline()
+	print pointDataString
+	while pointDataString != None:
+		print Parse(pointDataString)
+		data.readline()
+		pointDataString = data.readline()

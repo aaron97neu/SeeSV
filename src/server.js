@@ -14,7 +14,7 @@ var session = require("express-session");
 
 var configDB = require("./config/database.js");
 
-var port = process.env.PORT || 80; // Either the env var PORT or 80
+var port = 82;//process.env.PORT || 82; // Either the env var PORT or 80
 
 //setup db
 mongoose.connect(configDB.url);

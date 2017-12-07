@@ -1,0 +1,11 @@
+Run command with:
+	sudo python ehabdReduction.py <CSV file path>
+
+Expects input file to be of format:
+
+name1,name2
+featureCount,totalPoints
+value1name1,value1name2
+value2name2,value2name2
+
+(Values must be ints right now)
