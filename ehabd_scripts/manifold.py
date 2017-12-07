@@ -23,16 +23,31 @@ if len(sys.argv) != 3:
 
 #globals
 csvFile = open(sys.argv[2],'r')
-csvFormat = open("formated/" + sys.argv[2].split("/")[1] + ".format.csv",'r')
-csvFormat = csvFormat.readline()
-n_points = csvFormat[1]
-X, color = datasets.samples_generator.make_s_curve(n_points, random_state=0)
+csvFormat = open("formated/" + sys.argv[2].split("/")[1].split(".")[0] + ".format.csv",'r')
+csvFormat = csvFormat.readline().split(":")
+n_points = int(csvFormat[1])
+
+data = csvFile.readline()
+try:
+	int(data.split(","))
+except:
+	data = csvFile.readline()
+
+X = []
+while data != '':
+	array = []
+	for point in data.split(","):
+		array.append(float(point))
+	X.append(array)
+	data = csvFile.readline()
+
 n_neighbors = 10
-n_components = csvFormat[0]
+n_components = int(csvFormat[0])
 
 fig = plt.figure(figsize=(15, 8))
-plt.suptitle("Manifold Learning with %i points, %i neighbors"
-             % (1000, n_neighbors), fontsize=14)
+plt.suptitle("Manifold Learning with %i points, %i features"
+             % (len(X), n_components), fontsize=14)
+
 
 def isoMap():
 	t0 = time()
@@ -40,7 +55,7 @@ def isoMap():
 	t1 = time()
 	print("Isomap: %.2g sec" % (t1 - t0))
 	ax = fig.add_subplot(257)
-	plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
+	plt.scatter(Y[:, 0], Y[:, 1])
 	plt.title("Isomap (%.2g sec)" % (t1 - t0))
 	ax.xaxis.set_major_formatter(NullFormatter())
 	ax.yaxis.set_major_formatter(NullFormatter())
@@ -48,12 +63,12 @@ def isoMap():
 
 def mds():
 	t0 = time()
-	mds = manifold.MDS(n_components, max_iter=100, n_init=1)
+	mds = manifold.MDS(n_components, max_iter=300, n_init=1)
 	Y = mds.fit_transform(X)
 	t1 = time()
 	print("MDS: %.2g sec" % (t1 - t0))
 	ax = fig.add_subplot(258)
-	plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
+	plt.scatter(Y[:, 0], Y[:, 1])
 	plt.title("MDS (%.2g sec)" % (t1 - t0))
 	ax.xaxis.set_major_formatter(NullFormatter())
 	ax.yaxis.set_major_formatter(NullFormatter())
@@ -68,7 +83,7 @@ def specteralEmbedding():
 	t1 = time()
 	print("SpectralEmbedding: %.2g sec" % (t1 - t0))
 	ax = fig.add_subplot(259)
-	plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
+	plt.scatter(Y[:, 0], Y[:, 1])
 	plt.title("SpectralEmbedding (%.2g sec)" % (t1 - t0))
 	ax.xaxis.set_major_formatter(NullFormatter())
 	ax.yaxis.set_major_formatter(NullFormatter())
@@ -81,12 +96,31 @@ def tSNE():
 	t1 = time()
 	print("t-SNE: %.2g sec" % (t1 - t0))
 	ax = fig.add_subplot(2, 5, 10)
-	plt.scatter(Y[:, 0], Y[:, 1], c=color, cmap=plt.cm.Spectral)
+	plt.scatter(Y[:, 0], Y[:, 1])
 	plt.title("t-SNE (%.2g sec)" % (t1 - t0))
 	ax.xaxis.set_major_formatter(NullFormatter())
 	ax.yaxis.set_major_formatter(NullFormatter())
 	plt.axis('tight')
 
 def save():
-	plt.savefig("test.svg")
+	plt.savefig("svgs/test.svg")
 
+if sys.argv[1] == "mds":
+	mds()
+elif sys.argv[1] == "t-sne":
+	tSNE()
+elif sys.argv[1] == "specteral_embedding":
+	specteralEmbedding()
+elif sys.argv[1] == "isomap":
+	isoMap()
+elif sys.argv[1] == "all":
+	mds()
+	if n_components < 4:
+		tSNE()
+	specteralEmbedding()
+	isoMap()
+else:
+	print("Types: mds, t-sne, specteral_embedding, isomap, all")
+	exit()
+
+save()
