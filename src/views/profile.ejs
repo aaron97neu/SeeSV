@@ -2,12 +2,17 @@
 <!doctype html>
 <html>
 <head>
-    <title>Node Authentication</title>
+    <title>SeeSV</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <style>
+    
+	<style>
         body        { padding-top:80px; word-wrap:break-word; }
     </style>
+	<script type="text/javascript" src="dygraph.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.js"></script>
+	<link rel="stylesheet" src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.css" />
+	<link rel="stylesheet" src="dygraph.css" />
 </head>
 <body>
 <div class="container">
@@ -29,10 +34,27 @@
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
                     </p>
-
             </div>
         </div>
+		<div class="col-sm-6">
+			<div class="well">
+				<div id="graph"></div>
+				<script type="text/javascript">
+					g = new Dygraph(
 
+				    // containing div
+					document.getElementById("graph"),
+
+					// CSV or path to a CSV file.
+					"Date,Temperature\n" +
+					"2008-05-07,75\n" +
+					"2008-05-08,70\n" +
+					"2008-05-09,80\n"
+
+				    );
+				</script>
+			</div>
+		</div>
     </div>
 
 </div>
