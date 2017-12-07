@@ -4,6 +4,8 @@ var express = require("express");
 var path = require("path");
 var chokidar = require("chokidar");
 
+
+
 //setup file watcher
 var watcher = chokidar.watch(path.join(__dirname, '../sampleData'), {
   ignored: /(^|[\/\\])\../,
@@ -30,7 +32,8 @@ function getAllCSVs(){
 	var files = fs.readdirSync('../sampleData');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
-		var option = "\n<li><href=\"#\">" + files[i] + "</li>";
+		var option = "<button class=\"dropdown-item\" type=\"button\">"
+			 + files[i] + "</button>\n"
 		dropdownModule += option;
 	}
 	return dropdownModule;
@@ -47,6 +50,11 @@ app.get('/csvload', function(req, res){
   res.end();
 });
 
+/*  Frontend queries /csvload to get the CSV list*/
+app.get('/dygraphload', function(req, res){
+  res.send(returnDygraph("a_file.csv"));
+  res.end();
+});
 
 //setup event listeners
 watcher
