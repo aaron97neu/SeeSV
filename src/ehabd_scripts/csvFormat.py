@@ -6,7 +6,9 @@ if len(sys.argv) != 2:
 
 def reduce(filePath):
 	toReduce = open(filePath,'r')
-	reduced = open(filePath.split("/csvs/")[0] + "/ehabd_scripts/formated/" + sys.argv[1].split(".")[0].split("/")[1] + ".format.csv",'w+')
+	fileName = filePath.split(".")[0].split("/")
+	fileName = fileName[len(fileName) - 1]
+	reduced = open(filePath.split("/csvs/")[0] + "/ehabd_scripts/formated/" + fileName + ".format.csv",'w+')
 
 	currLine = toReduce.readline()
 	features = len(currLine.split(","))

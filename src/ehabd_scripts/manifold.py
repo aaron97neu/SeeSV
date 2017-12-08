@@ -17,19 +17,21 @@ from sklearn import manifold, datasets
 # Next line to silence pyflakes. This import is needed.
 Axes3D
 
+svgName = ""
+fileName = ""
 n_points = -1
 n_neighbors = -1
-n_components
+n_components = -1
 X = []
-plt = None
 fig = None
 
 def runIt(csvFileName):
 	#globals
-	global n_points, n_neighbors, X, n_components,plt,fig
+	global n_points, n_neighbors, X, n_components,fig,svgName,fileName
 	csvFile = open(csvFileName,'r')
 	fileName = csvFileName.split("/")[len(csvFileName.split("/")) - 1].split(".")[0]
 	csvFormat = open(csvFileName.split("/csvs/")[0] + "/ehabd_scripts/formated/" + fileName + ".format.csv",'r')
+	svgName = csvFileName.split("/csvs/")[0] + "/svgs/" + fileName
 	csvFormat = csvFormat.readline().split(":")
 	n_points = int(csvFormat[1])
 
@@ -109,7 +111,8 @@ def tSNE():
 	plt.axis('tight')
 
 def save():
-	plt.savefig("svgs/" + sys.argv[2].split("/")[1].split(".")[0])
+	open(svgName + ".svg",'w+')
+	plt.savefig(svgName + ".svg")
 
 def part2(form):
 	if form == "mds":

@@ -9,17 +9,8 @@ numPoints = 0
 features = 0
 inputTextFile = sys.argv[1]
 
-svgPath = inputTextFile.split("/csvs/")[0] + "/svgs/"
-outputPath = inputTextFile.split("/csvs/")[0] + "/ehabd_scripts/"
 distThresh = -1
 radius = distThresh
-
-import importlib.util
-spec = importlib.util.spec_from_file_location("ehabd_scripts.csvFormat", outputPath + "csvFormat.py")
-foo = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(foo)
-
-foo.reduce(inputTextFile)
 
 percent = 30.0/100.0
 
@@ -40,10 +31,7 @@ def distance(point1, point2):
 #Get pointDataString in correct format?
 def prime():
 	global data, numPoints, features
-	fileName = sys.argv[1].split("/")
-	fileName = fileName[len(fileName) - 1]
-	fileName = fileName.split(".")[0]
-	infophile = open(outputPath + "formated/" + fileName + ".format.csv",'r')
+	infophile = open("formated/" + sys.argv[1].split("/")[1].split(".")[0] + ".format.csv",'r')
 	dataWay = infophile.readline()
 	maxRange = int(dataWay.split(":")[1])
 	numPoints = maxRange
@@ -149,7 +137,7 @@ inputFileName = inputTextFile.split("/")
 inputFileName = inputFileName[len(inputFileName)-1]
 inputFileName = inputFileName.split(".")[0]
 f, axes = plt.subplots(features, features, figsize=(50,50))
-output = open(outputPath + "EHABD_Files/" + inputFileName + ".ehabd","w+")
+output = open("EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
 	for j in range(0,features):
 		if i != j:
@@ -160,6 +148,7 @@ for i in range(0,features):
 			for k in range(0,int(len(finin[i]))):
 				output.write(str(finin[i][k][0]) + ";" + str(finin[i][k][1].split("\r\n")[0]) + "||")
 			output.write('\n')
+
 #for i in range(0,len(finin)):
 #	for j in range(0,len(finin[i])):
 #		for k in range(0,len(finin)):
@@ -168,17 +157,7 @@ for i in range(0,features):
 #		output.write('\n')
 
 
-fileName = sys.argv[1].split("/")
-fileName = fileName[len(fileName) - 1]
-fileName = fileName.split(".")[0]
-plt.savefig(svgPath + fileName + ".ehabd.svg")
-
-
-spec = importlib.util.spec_from_file_location("ehabd_scripts.manifold", outputPath + "manifold.py")
-bar = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(bar)
-
-bar.runIt(inputTextFile)
+plt.savefig("svgs/" + sys.argv[1].split("/")[1].split(".")[0] + ".ehabd.svg")
 print("done")
 
 def findAndPlot():
