@@ -14,7 +14,7 @@ var session = require("express-session");
 
 var configDB = require("./config/database.js");
 
-var port = process.env.PORT || 80; // Either the env var PORT or 80
+var port = process.env.PORT || 81; // Either the env var PORT or 80
 
 //setup db
 mongoose.connect(configDB.url);
@@ -37,9 +37,8 @@ var log = console.log.bind(console);
 //setup server static
 
 app = express();
-/*var serveDir = path.join(__dirname, 'public'); 
+var serveDir = path.join(__dirname, 'csvs'); 
 app.use(express.static(serveDir));
-*/
 
 app.use(morgan('dev')); // log requests to stdout
 app.use(cookieParser()); // read cookies
