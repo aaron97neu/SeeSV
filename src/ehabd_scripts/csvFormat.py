@@ -24,4 +24,4 @@ def reduce(filePath):
 		totalLines = totalLines + 1
 		currLine = toReduce.readline()
 
-		reduced.write(str(features) + ":" + str(totalLines) + "\n")
+	reduced.write(str(features) + ":" + str(totalLines) + "\n")

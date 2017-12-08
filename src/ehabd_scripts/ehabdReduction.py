@@ -21,7 +21,7 @@ spec.loader.exec_module(foo)
 
 foo.reduce(inputTextFile)
 
-percent = 30.0/100.0
+percent = 40.0/100.0
 
 data = open(inputTextFile)
 
@@ -29,8 +29,8 @@ data = open(inputTextFile)
 def Parse(s,feature1,feature2):
 	tem = s.split(",")
 	ohNaNa = []
-	ohNaNa.append(tem[feature1])
-	ohNaNa.append(tem[feature2].split("\n")[0])
+	ohNaNa.append(float(tem[feature1].split("\n")[0]))
+	ohNaNa.append(float(tem[feature2].split("\n")[0]))
 	return ohNaNa
 
 #Calculates distance between two points
@@ -105,7 +105,7 @@ def sortList(points):
 		for i in range(0,len(ranked_points)):
 			if distance(point,ranked_points[i]) > radius:
 				ranked_points.insert(i, point)
-				print("Inserting " + point[0] + ": value=" + str(point[2]) +": At position " + str(i))
+				print("Inserting " + str(point[0]) + ": value=" + str(point[2]) +": At position " + str(i))
 				insert = True
 				break
 			elif point[2] > ranked_points[i][2]:
@@ -153,12 +153,12 @@ output = open(outputPath + "EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
 	for j in range(0,features):
 		if i != j:
-			axes[i,j].plot(finin[i*(features-1)+j],'ro')
+			axes[i,j].plot(finin[i*(features-1)+j][:][0],finin[i*(features-1)+j][:][1],'ro')
 			axes[i,j].set_title("Feature " + str(i) + " vs. Feature " + str(j))
 			output.write(str(i) + ":" + str(j) + ":" + str(len(finin[i])))
 			output.write("\n")
 			for k in range(0,int(len(finin[i]))):
-				output.write(str(finin[i][k][0]) + ";" + str(finin[i][k][1].split("\r\n")[0]) + "||")
+				output.write(str(finin[i][k][0]) + ";" + str(finin[i][k][1]) + "||")
 			output.write('\n')
 #for i in range(0,len(finin)):
 #	for j in range(0,len(finin[i])):
