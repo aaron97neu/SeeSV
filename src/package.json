@@ -21,6 +21,7 @@
     "cookie-parser": "~1.4.3",
     "method-override": "~2.3.6",
     "express-session": "~1.14.1"
+    "popper.js": "^1.12.9"
   },
   "devDependencies": {},
   "scripts": {
