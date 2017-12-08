@@ -22,10 +22,10 @@ module.exports = function(app, passport){
           console.log('Sent:', fileName);
         }
      });
-});
+  });
 
-//Serbes SVG files
-app.get('/svgs/:name', function(req, res) {
+  //Serves SVG files
+  app.get('/svgs/:name', function(req, res) {
     var options = {
       root: __dirname + '/../svgs/',
       dotfiles: 'deny',
@@ -42,7 +42,23 @@ app.get('/svgs/:name', function(req, res) {
           console.log('Sent:', fileName);
         }
      });
-});
+  });
+
+  //file upload
+  app.post('/fileupload', function(req, res) {
+    var path = require("path");
+    if (!req.files)
+      return res.status(400).send('No files were uploaded.');
+    let csvupload = req.files.csvupload;
+
+    csvupload.mv(path.join(__dirname, '../csvs',req.files.csvupload.name), function(err) {
+      if (err)
+        return res.status(500).send(err);
+       
+      //res.send('File uploaded!');
+      res.redirect('/profile')
+    });
+  });
 
   // Login form
   app.get('/login', function(req, res) {

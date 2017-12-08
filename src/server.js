@@ -11,6 +11,7 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
+var fileUpload = require("express-fileupload");
 
 var configDB = require("./config/database.js");
 
@@ -45,6 +46,8 @@ app.use(cookieParser()); // read cookies
 app.use(bodyParser()); // get info from html forms
 
 app.set('view engine', 'ejs'); //use ejs for templating
+
+app.use(fileUpload());
 
 //pasport setup
 app.use(session({ secret: 'STAIRS!? NOOOOOOOOOOOOO!'}));
