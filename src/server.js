@@ -22,8 +22,10 @@ mongoose.connect(configDB.url);
 // Passport
 require('./config/passport')(passport)
 
+
+
 //setup file watcher
-var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
+var watcher = chokidar.watch(path.join(__dirname, '../sampleData'), {
   ignored: /(^|[\/\\])\../,
   persistent: true
 });
@@ -59,13 +61,19 @@ console.log('Server running on port ' + port);
 
 /*  This generates HTML that will display in browser listing all CSV files */
 function getAllCSVs(){
-	var files = fs.readdirSync('csvs');
+	var files = fs.readdirSync('../sampleData');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
-		var option = "\n<li>" + files[i] + "</li>";
+		var option = "<button class=\"dropdown-item\" type=\"button\">"
+			 + files[i] + "</button>\n"
 		dropdownModule += option;
 	}
 	return dropdownModule;
+}
+
+/* Will create the dygraph and return javascript to be displayed on frontend*/
+function returnDygraph(filename){
+	console.log("Filename: " + filename);
 }
 
 /*  Frontend queries /csvload to get the CSV list*/
@@ -74,6 +82,11 @@ app.get('/csvload', function(req, res){
   res.end();
 });
 
+/*  Frontend queries /csvload to get the CSV list*/
+app.get('/dygraphload', function(req, res){
+  res.send(returnDygraph("a_file.csv"));
+  res.end();
+});
 
 //setup event listeners
 watcher
