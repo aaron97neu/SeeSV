@@ -4,6 +4,63 @@ module.exports = function(app, passport){
     res.render('index.ejs');
   });
 
+  //Serves CSV files
+  app.get('/csvs/:name', function(req, res) {
+    var options = {
+      root: __dirname + '/../csvs/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+    var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+	    if (err) {
+          console.log(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+     });
+  });
+
+  //Serves SVG files
+  app.get('/svgs/:name', function(req, res) {
+    var options = {
+      root: __dirname + '/../svgs/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+    var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+	    if (err) {
+          console.log(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+     });
+  });
+
+  //file upload
+  app.post('/fileupload', function(req, res) {
+    var path = require("path");
+    if (!req.files)
+      return res.status(400).send('No files were uploaded.');
+    let csvupload = req.files.csvupload;
+
+    csvupload.mv(path.join(__dirname, '../csvs',req.files.csvupload.name), function(err) {
+      if (err)
+        return res.status(500).send(err);
+       
+      //res.send('File uploaded!');
+      //req.flash('info','File uploaded successfully');
+      res.redirect('/profile')
+    });
+  });
+
   // Login form
   app.get('/login', function(req, res) {
     res.render('login.ejs', {message: req.flash('loginMessage') });
@@ -34,6 +91,32 @@ module.exports = function(app, passport){
       user : req.user //get user from template
     });
   });
+
+/*
+  //This displays the CSVs and SVGs
+  app.get('/profile?:csv_name', isLoggedIn, function(req, res){
+    var options = {
+      root: __dirname + '/../svgs/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+    var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+	    if (err) {
+          console.log(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+     });
+
+	res.render('profile.ejs', {
+      user : req.user //get user from template
+    });
+  });
+ */
   
   //logout
   app.get('/logout', function(req, res) {

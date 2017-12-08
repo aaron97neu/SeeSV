@@ -1,40 +1,213 @@
+
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
 <head>
-    <title>Node Authentication</title>
+    <title>SeeSV</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <style>
+    
+	<style>
         body        { padding-top:80px; word-wrap:break-word; }
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .choose-file {
+        	background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .submit {
+        	background-color: #4CAF50;
+            color: white;
+            padding: 17px;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .choose-file:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+        
+        .submit:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+        
+        .hide {
+        	display: none;
+        }
+        
+        .inln {
+        	display: inline-block;
+        }
+        
+        .bottompad {
+        	padding-bottom: 5px;
+        }
+        
+        .graphbox {
+        	height: 200px;
+            width: 200px;
+        }
+        .dropdown a:hover {background-color: #f1f1f1}
+        
+        .show {display:block;}
     </style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.js"></script>
+	<link rel="stylesheet" src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.css" />
+	<link rel="stylesheet" src="dygraph.css" />
 </head>
 <body>
 <div class="container">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
-
+    
     <div class="row">
-
+		<div class="page-header text-center">
+        	<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+	        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    	</div>
+     <!-- show any messages that come back with authentication -->
+		
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
+        	<div class="bottompad">
+	    	<div class="dropdown inln">
+	    		<button onclick="myFunction()" class="dropbtn">Select a CSV</button>
+		    		<div id="CSVdropdown" class="dropdown-content">
+      	  				<script>$("#CSVdropdown").load("csvload");</script>
+					</div>
+    			</div>
+	
+			<form ref="upldfm" id="upldfm" action="fileupload" method="post" enctype="multipart/form-data" class="inln">
+	    		<div class="choose-file">
+				<input type="file" name="csvupload" accept=".csv" class="upload-blocks">
+			</div>
+        		<input type="submit" class="submit">
+			</form>
+    	</div>
             <div class="well">
                 <h3><span class="fa fa-user"></span> Local</h3>
-
                     <p>
-                        <strong>id</strong>: <%= user._id %><br>
+                    	<strong>id</strong>: <%= user._id %><br>
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
+					</p>
             </div>
         </div>
+		<div class="col-sm-6">
+			<div class="well">
+				<div id="graph"></div>
+				<script type="text/javascript">
+					var csv_name = window.location.href.split("?")[1]
+					if(csv_name == undefined){
+						document.getElementById("graph").innerHTML = "<div id=\"graph\" class=\"graphbox\"></div>\n\t\t\t\t\t\t<h3 align=\"center\">Please select a CSV!</h3>\n\t\t\t\t</div>";
+					}
+					else{	
+						g = new Dygraph(
 
+					    // containing div
+						document.getElementById("graph"),
+						
+						"csvs/" + csv_name,
+					
+						{
+							legend: 'always',
+							strokeWidth: 0.0,
+							drawPoints: true
+						}
+				    	);
+					}
+				</script>
+			</div>
+		</div>
     </div>
-
-</div>
+	<div class="row">
+		<div id="manifold" class="well">
+			<script>
+				var csv_name = window.location.href.split("?")[1]
+				if(csv_name != undefined){
+					var svg_name = csv_name.split(".")[0] + ".svg";
+					$("#links").load("/Main_Page #jq-p-Getting-Started li", 
+						function (responseText, textStatus, XMLHttpRequest) {
+    						if (textStatus == "success") {
+    							//all is well
+							}
+    						if (textStatus == "error") {
+         						// oh no!
+    						}
+  						}
+					var file = $("#manifold").load("svgs/" + svg_name);
+					console.log(file);
+				}
+			</script>
+			<!--<img src="http://www.wallies.com/filebin/images/loading_apple.gif" width="120" class="mid">
+            <h3 align="middle">Please wait while the reduction is generated. Check back soon!</h3>
+			<img src="svgs/test.svg" width="1130"></div>-->
+		</div>
 </body>
+
+<script>
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("CSVdropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
+
 </html>

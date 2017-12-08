@@ -11,6 +11,7 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
+var fileUpload = require("express-fileupload");
 
 var configDB = require("./config/database.js");
 var spawn = require("child_process").spawn;
@@ -24,6 +25,8 @@ mongoose.connect(configDB.url);
 
 // Passport
 require('./config/passport')(passport)
+
+
 
 //setup file watcher
 var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
@@ -45,6 +48,8 @@ app.use(bodyParser()); // get info from html forms
 
 app.set('view engine', 'ejs'); //use ejs for templating
 
+app.use(fileUpload());
+
 //pasport setup
 app.use(session({ secret: 'STAIRS!? NOOOOOOOOOOOOO!'}));
 app.use(passport.initialize());
@@ -63,15 +68,34 @@ function getAllCSVs(){
 	var files = fs.readdirSync('csvs');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
-		var option = "\n<li>" + files[i] + "</li>";
+		var option = "<a href=\"?" + files[i] + "\">" + files[i] + "</a>\n";
 		dropdownModule += option;
 	}
 	return dropdownModule;
 }
 
+/* Will create the dygraph and return javascript to be displayed on frontend*/
+function returnDygraph(filename){
+	console.log("Filename: " + filename);
+}
+
 /*  Frontend queries /csvload to get the CSV list*/
 app.get('/csvload', function(req, res){
+	var module = getAllCSVs();
+	res.send(getAllCSVs());
+	res.end();
+});
+
+/* This is what is queried for specific stuff re */
+app.get('/csvload', function(req, res){
   res.send(getAllCSVs());
+  res.end();
+});
+
+
+/*  Frontend queries /csvload to get the CSV list*/
+app.get('/dygraphload', function(req, res){
+  res.send(returnDygraph("a_file.csv"));
   res.end();
 });
 
