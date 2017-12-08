@@ -64,8 +64,7 @@ function getAllCSVs(){
 	var files = fs.readdirSync('csvs');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
-		var option = "<button class=\"dropdown-item\" type=\"button\">"
-			 + files[i] + "</button>\n"
+		var option = "<a href=\"?" + files[i] + "\">" + files[i] + "</a>\n";
 		dropdownModule += option;
 	}
 	return dropdownModule;
@@ -81,6 +80,13 @@ app.get('/csvload', function(req, res){
   res.send(getAllCSVs());
   res.end();
 });
+
+/* This is what is queried for specific stuff re */
+app.get('/csvload', function(req, res){
+  res.send(getAllCSVs());
+  res.end();
+});
+
 
 /*  Frontend queries /csvload to get the CSV list*/
 app.get('/dygraphload', function(req, res){

@@ -47,7 +47,7 @@
         
         .show {display:block;}
     </style>
-	<script type="text/javascript" src="dygraph.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.js"></script>
 	<link rel="stylesheet" src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.css" />
 	<link rel="stylesheet" src="dygraph.css" />
@@ -62,10 +62,8 @@
 
     <div class="dropdown">
     <button onclick="myFunction()" class="dropbtn">Select a CSV</button>
-      <div id="myDropdown" class="dropdown-content">
-        <% for (var i = 0; i < 15; i++){ %>
-          <a href="#home-<%= i %>">Home <%= i %></a>
-	<% } %>
+      <div id="CSVdropdown" class="dropdown-content">
+        <script>$("#CSVdropdown").load("csvload");</script>
       </div>
     </div>
 
@@ -87,15 +85,18 @@
 			<div class="well">
 				<div id="graph"></div>
 				<script type="text/javascript">
+					var csv_name = window.location.href.split("?")[1]
 					g = new Dygraph(
 
 				    // containing div
 					document.getElementById("graph"),
 					
-					"csvs/temperatures.csv",
+					"csvs/" + csv_name,
 					
 					{
-						legend: 'always'
+						legend: 'always',
+						strokeWidth: 0.0,
+						drawPoints: true
 					}
 				    );
 				</script>
@@ -111,7 +112,7 @@
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
 function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("CSVdropdown").classList.toggle("show");
 }
 
 // Close the dropdown if the user clicks outside of it

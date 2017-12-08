@@ -74,6 +74,32 @@ app.get('/svgs/:name', function(req, res) {
       user : req.user //get user from template
     });
   });
+
+/*
+  //This displays the CSVs and SVGs
+  app.get('/profile?:csv_name', isLoggedIn, function(req, res){
+    var options = {
+      root: __dirname + '/../svgs/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+    var fileName = req.params.name;
+      res.sendFile(fileName, options, function (err) {
+	    if (err) {
+          console.log(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+     });
+
+	res.render('profile.ejs', {
+      user : req.user //get user from template
+    });
+  });
+ */
   
   //logout
   app.get('/logout', function(req, res) {
