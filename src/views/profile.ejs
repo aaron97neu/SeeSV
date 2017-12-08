@@ -113,7 +113,7 @@
         	<h1><span class="fa fa-anchor"></span> Profile Page</h1>
 	        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     	</div>
-	
+     <!-- show any messages that come back with authentication -->
 		
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
@@ -125,10 +125,10 @@
 					</div>
     			</div>
 	
-			<form action="/" class="inln">
-    			<div class="choose-file">
-  					<input type="file" name="csv-upload" accept=".csv" class="upload-blocks">
-				</div>
+			<form ref="upldfm" id="upldfm" action="fileupload" method="post" enctype="multipart/form-data" class="inln">
+	    		<div class="choose-file">
+				<input type="file" name="csvupload" accept=".csv" class="upload-blocks">
+			</div>
         		<input type="submit" class="submit">
 			</form>
     	</div>
@@ -193,30 +193,6 @@
 			</script>
 			
 		</div>
-	<div class="row">
-		<div id="ehabd" class="well">
-			<script>
-				function getEHABD(){
-				var csv_name = window.location.href.split("?")[1]
-				if(csv_name != undefined){
-					var ehabd_name = csv_name.split(".")[0] + ".ehabd.svg";
-					$("#ehabd").load("svgs/" + ehabd_name, 
-						function (responseText, textStatus, XMLHttpRequest) {
-   							console.log("Request successful!");
-							return true;
-			  			});
-						return false;
-					}
-					return true;
-				}
-				var display = getEHABD();
-				console.log("display: " + display);
-				if(!display){
-					document.getElementById("ehabd").innerHTML = "<img src=\"http://www.wallies.com/filebin/images/loading_apple.gif\" width=\"120\" class=\"mid\">\n<h3 align=\"middle\">Please wait while the reduction is generated. Check back soon!</h3>\n</div>"
-				}
-			</script>
-		</div>
-	</div>
 </body>
 
 <script>

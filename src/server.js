@@ -14,8 +14,11 @@ var session = require("express-session");
 var fileUpload = require("express-fileupload");
 
 var configDB = require("./config/database.js");
+var spawn = require("child_process").spawn;
 
+//constants
 var port = process.env.PORT || 80; // Either the env var PORT or 80
+var ehabd_path = path.join(__dirname, 'ehabd_scripts/ehabdReduction.py');
 
 //setup db
 mongoose.connect(configDB.url);
@@ -31,15 +34,13 @@ var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
   persistent: true
 });
 var log = console.log.bind(console);
-
+var ready = 0;
 //run initial python code
 
 
 //setup server static
 
 app = express();
-var serveDir = path.join(__dirname, 'csvs'); 
-app.use(express.static(serveDir));
 
 app.use(morgan('dev')); // log requests to stdout
 app.use(cookieParser()); // read cookies
@@ -80,8 +81,9 @@ function returnDygraph(filename){
 
 /*  Frontend queries /csvload to get the CSV list*/
 app.get('/csvload', function(req, res){
-  res.send(getAllCSVs());
-  res.end();
+	var module = getAllCSVs();
+	res.send(getAllCSVs());
+	res.end();
 });
 
 /* This is what is queried for specific stuff re */
@@ -99,19 +101,31 @@ app.get('/dygraphload', function(req, res){
 
 //setup event listeners
 watcher
-  .on('ready', () => log('Initial scan complete. Ready for changes'))
+  .on('ready', () => {
+    log('Initial scan complete. Ready for changes');
+    ready = 1;
+  })
   .on('error', error => log(`Watcher error: ${error}`))
-  .on('add', path => log(`File ${path} has been added`))
+  .on('add', pathToFile => {
+    log(`File ${pathToFile} has been added`);
+    console.log('Running '+ehabd_path+' '+pathToFile);
+    var ehabd = spawn('python3',[ehabd_path, pathToFile]);
+    ehabd.stdout.on('data', function (data){
+      if(data.toString().trim() === 'done'){
+	console.log("Finished running ehabdReduction on "+path);
+      }
+    });
+    
+  })
   .on('change', path => log(`File ${path} has been changed`))
   .on('unlink', path => log(`File ${path} has been removed`));
 
+
 /*
-// More possible events.
+// Chokidar more possible events.
 watcher
   .on('addDir', path => log(`Directory ${path} has been added`))
   .on('unlinkDir', path => log(`Directory ${path} has been removed`))
-  .on('error', error => log(`Watcher error: ${error}`))
-  .on('ready', () => log('Initial scan complete. Ready for changes'))
   .on('raw', (event, path, details) => {
     log('Raw event info:', event, path, details);
   });

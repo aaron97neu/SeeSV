@@ -56,6 +56,7 @@ module.exports = function(app, passport){
         return res.status(500).send(err);
        
       //res.send('File uploaded!');
+      //req.flash('info','File uploaded successfully');
       res.redirect('/profile')
     });
   });
