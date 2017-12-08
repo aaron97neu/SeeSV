@@ -1,3 +1,4 @@
+
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
@@ -15,6 +16,7 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
+            display: inline-block;
         }
         
         .dropbtn:hover, .dropbtn:focus {
@@ -43,6 +45,46 @@
             display: block;
         }
         
+        .choose-file {
+        	background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .submit {
+        	background-color: #4CAF50;
+            color: white;
+            padding: 17px;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .choose-file:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+        
+        .submit:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+        
+        .hide {
+        	display: none;
+        }
+        
+        .inln {
+        	display: inline-block;
+        }
+        
+        .bottompad {
+        	padding-bottom: 5px;
+        }
+        
         .dropdown a:hover {background-color: #f1f1f1}
         
         .show {display:block;}
@@ -55,29 +97,39 @@
 <body>
 <div class="container">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
-
-    <div class="dropdown">
-    <button onclick="myFunction()" class="dropbtn">Select a CSV</button>
-      <div id="CSVdropdown" class="dropdown-content">
-        <script>$("#CSVdropdown").load("csvload");</script>
-      </div>
-    </div>
-
+    
     <div class="row">
-
+		<div class="page-header text-center">
+        	<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+	        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    	</div>
+	
+		
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
+        	<div class="bottompad">
+	    	<div class="dropdown inln">
+	    		<button onclick="myFunction()" class="dropbtn">Select a CSV</button>
+		    		<div id="CSVdropdown" class="dropdown-content">
+      	  				<script>$("#CSVdropdown").load("csvload");</script>
+					</div>
+    			</div>
+	
+			<form action="/action_page.php" class="inln">
+    			<div class="choose-file">
+  					<input type="file" name="pic" accept="image/*" class="upload-blocks">
+				</div>
+        		<input type="submit" class="submit">
+			</form>
+    	</div>
             <div class="well">
+            
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
+                        <strong>id</strong>: 5a281ba9cabb90243253b6b6<br>
+                        <strong>email</strong>: dkrolopp@purdue.edu<br>
+                        <strong>password</strong>: $2a$08$ScVxjsgtxus9/Gng7WhjK.5roLUE6JqqsxfefhF4WgTD7GH0JjoPu
                     </p>
             </div>
         </div>
