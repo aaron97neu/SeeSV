@@ -1,3 +1,5 @@
+var name = "";
+
 module.exports = function(app, passport){
   // Homepage with links to login page
   app.get('/', function(req, res) {
@@ -50,8 +52,7 @@ module.exports = function(app, passport){
     if (!req.files)
       return res.status(400).send('No files were uploaded.');
     let csvupload = req.files.csvupload;
-
-    csvupload.mv(path.join(__dirname, '../csvs',req.files.csvupload.name), function(err) {
+    csvupload.mv(path.join(__dirname, '../csvs',req.files.csvupload.name + " (" + name + ")"), function(err) {
       if (err)
         return res.status(500).send(err);
        
@@ -87,7 +88,8 @@ module.exports = function(app, passport){
 
   //profile section. Use middleware to verify user is logged in
   app.get('/profile', isLoggedIn, function(req, res){
-    res.render('profile.ejs', {
+	name = req.user.local.email;
+	res.render('profile.ejs', {
       user : req.user //get user from template
     });
   });

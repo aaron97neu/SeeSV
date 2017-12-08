@@ -106,10 +106,10 @@ watcher
     ready = 1;
   })
   .on('error', error => log(`Watcher error: ${error}`))
-  .on('add', pathToFile => {
-    log(`File ${pathToFile} has been added`);
-    console.log('Running '+ehabd_path+' '+pathToFile);
-    var ehabd = spawn('python3',[ehabd_path, pathToFile]);
+  .on('add', path => {
+    log(`File ${path} has been added`);
+    console.log('Running '+ehabd_path+' '+path);
+    var ehabd = spawn('python3',[ehabd_path, path]);
     ehabd.stdout.on('data', function (data){
       if(data.toString().trim() === 'done'){
 	console.log("Finished running ehabdReduction on "+path);
