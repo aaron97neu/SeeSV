@@ -117,7 +117,7 @@
 	
 			<form action="/action_page.php" class="inln">
     			<div class="choose-file">
-  					<input type="file" name="pic" accept="image/*" class="upload-blocks">
+  					<input type="file" name="csv-upload" accept=".csv" class="upload-blocks">
 				</div>
         		<input type="submit" class="submit">
 			</form>
@@ -125,12 +125,11 @@
             <div class="well">
             
                 <h3><span class="fa fa-user"></span> Local</h3>
-
                     <p>
-                        <strong>id</strong>: 5a281ba9cabb90243253b6b6<br>
-                        <strong>email</strong>: dkrolopp@purdue.edu<br>
-                        <strong>password</strong>: $2a$08$ScVxjsgtxus9/Gng7WhjK.5roLUE6JqqsxfefhF4WgTD7GH0JjoPu
-                    </p>
+                    	<strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>password</strong>: <%= user.local.password %>
+					</p>
             </div>
         </div>
 		<div class="col-sm-6">
