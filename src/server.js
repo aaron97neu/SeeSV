@@ -14,7 +14,7 @@ var session = require("express-session");
 
 var configDB = require("./config/database.js");
 
-var port = process.env.PORT || 81; // Either the env var PORT or 80
+var port = process.env.PORT || 80; // Either the env var PORT or 80
 
 //setup db
 mongoose.connect(configDB.url);
@@ -25,7 +25,7 @@ require('./config/passport')(passport)
 
 
 //setup file watcher
-var watcher = chokidar.watch(path.join(__dirname, '../sampleData'), {
+var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
   ignored: /(^|[\/\\])\../,
   persistent: true
 });
@@ -61,7 +61,7 @@ console.log('Server running on port ' + port);
 
 /*  This generates HTML that will display in browser listing all CSV files */
 function getAllCSVs(){
-	var files = fs.readdirSync('../sampleData');
+	var files = fs.readdirSync('csvs');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
 		var option = "<button class=\"dropdown-item\" type=\"button\">"
