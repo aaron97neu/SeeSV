@@ -148,7 +148,6 @@ for i in range(0,features):
 			for k in range(0,int(len(finin[i]))):
 				output.write(str(finin[i][k][0]) + ";" + str(finin[i][k][1].split("\r\n")[0]) + "||")
 			output.write('\n')
-
 #for i in range(0,len(finin)):
 #	for j in range(0,len(finin[i])):
 #		for k in range(0,len(finin)):
