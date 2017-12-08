@@ -14,7 +14,11 @@ var session = require("express-session");
 
 var configDB = require("./config/database.js");
 
+<<<<<<< Updated upstream
 var port = process.env.PORT || 80; // Either the env var PORT or 80
+=======
+var port = process.env.PORT || 82; // Either the env var PORT or 80
+>>>>>>> Stashed changes
 
 //setup db
 mongoose.connect(configDB.url);

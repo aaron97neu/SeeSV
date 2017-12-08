@@ -163,8 +163,28 @@
 		</div>
     </div>
 	<div class="row">
-		<div class="well"><img src="svgs/test.svg" width="1130"></div>
-	</div>
+		<div id="manifold" class="well">
+			<script>
+				var csv_name = window.location.href.split("?")[1]
+				if(csv_name != undefined){
+					var svg_name = csv_name.split(".")[0] + ".svg";
+					$("#links").load("/Main_Page #jq-p-Getting-Started li", 
+						function (responseText, textStatus, XMLHttpRequest) {
+    						if (textStatus == "success") {
+    							//all is well
+							}
+    						if (textStatus == "error") {
+         						// oh no!
+    						}
+  						}
+					var file = $("#manifold").load("svgs/" + svg_name);
+					console.log(file);
+				}
+			</script>
+			<!--<img src="http://www.wallies.com/filebin/images/loading_apple.gif" width="120" class="mid">
+            <h3 align="middle">Please wait while the reduction is generated. Check back soon!</h3>
+			<img src="svgs/test.svg" width="1130"></div>-->
+		</div>
 </body>
 
 <script>

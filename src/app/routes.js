@@ -17,14 +17,14 @@ module.exports = function(app, passport){
     var fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
 	    if (err) {
-          console.log(err);
+          //console.log(err);
         } else {
           console.log('Sent:', fileName);
         }
      });
 });
 
-//Serbes SVG files
+//Serves SVG files
 app.get('/svgs/:name', function(req, res) {
     var options = {
       root: __dirname + '/../svgs/',
@@ -37,7 +37,7 @@ app.get('/svgs/:name', function(req, res) {
     var fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
 	    if (err) {
-          console.log(err);
+          //console.log(err);
         } else {
           console.log('Sent:', fileName);
         }
