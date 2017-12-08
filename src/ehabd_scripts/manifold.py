@@ -17,37 +17,43 @@ from sklearn import manifold, datasets
 # Next line to silence pyflakes. This import is needed.
 Axes3D
 
-if len(sys.argv) != 3:
-	print("Usage: sudo python3 manifold.py <manifold type> <csv File>")
-	exit()
-
-#globals
-csvFile = open(sys.argv[2],'r')
-csvFormat = open("formated/" + sys.argv[2].split("/")[1].split(".")[0] + ".format.csv",'r')
-csvFormat = csvFormat.readline().split(":")
-n_points = int(csvFormat[1])
-
-data = csvFile.readline()
-try:
-	int(data.split(","))
-except:
-	data = csvFile.readline()
-
+n_points = -1
+n_neighbors = -1
+n_components
 X = []
-while data != '':
-	array = []
-	for point in data.split(","):
-		array.append(float(point))
-	X.append(array)
+plt = None
+fig = None
+
+def runIt(csvFileName):
+	#globals
+	global n_points, n_neighbors, X, n_components,plt,fig
+	csvFile = open(csvFileName,'r')
+	fileName = csvFileName.split("/")[len(csvFileName.split("/")) - 1].split(".")[0]
+	csvFormat = open(csvFileName.split("/csvs/")[0] + "/ehabd_scripts/formated/" + fileName + ".format.csv",'r')
+	csvFormat = csvFormat.readline().split(":")
+	n_points = int(csvFormat[1])
+
 	data = csvFile.readline()
+	try:
+		int(data.split(","))
+	except:
+		data = csvFile.readline()
 
-n_neighbors = 10
-n_components = int(csvFormat[0])
+	X = []
+	while data != '':
+		array = []
+		for point in data.split(","):
+			array.append(float(point))
+		X.append(array)
+		data = csvFile.readline()
 
-fig = plt.figure(figsize=(15, 8))
-plt.suptitle("Manifold Learning with %i points, %i features"
+	n_neighbors = 10
+	n_components = int(csvFormat[0])
+
+	fig = plt.figure(figsize=(15, 8))
+	plt.suptitle("Manifold Learning with %i points, %i features"
              % (len(X), n_components), fontsize=14)
-
+	part2("all")
 
 def isoMap():
 	t0 = time()
@@ -105,22 +111,23 @@ def tSNE():
 def save():
 	plt.savefig("svgs/" + sys.argv[2].split("/")[1].split(".")[0])
 
-if sys.argv[1] == "mds":
-	mds()
-elif sys.argv[1] == "t-sne":
-	tSNE()
-elif sys.argv[1] == "specteral_embedding":
-	specteralEmbedding()
-elif sys.argv[1] == "isomap":
-	isoMap()
-elif sys.argv[1] == "all":
-	mds()
-	if n_components < 4:
+def part2(form):
+	if form == "mds":
+		mds()
+	elif form == "t-sne":
 		tSNE()
-	specteralEmbedding()
-	isoMap()
-else:
-	print("Types: mds, t-sne, specteral_embedding, isomap, all")
-	exit()
+	elif form == "specteral_embedding":
+		specteralEmbedding()
+	elif form == "isomap":
+		isoMap()
+	elif form == "all":
+		mds()
+		if n_components < 4:
+			tSNE()
+		specteralEmbedding()
+		isoMap()
+	else:
+		print("Types: mds, t-sne, specteral_embedding, isomap, all")
+		exit()
 
-save()
+	save()
