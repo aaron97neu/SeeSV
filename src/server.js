@@ -3,6 +3,24 @@ var http = require("http");
 var express = require("express");
 var path = require("path");
 var chokidar = require("chokidar");
+var mongoose = require("mongoose");
+var passport = require("passport");
+var flash = require("connect-flash");
+
+var morgan = require("morgan");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var session = require("express-session");
+
+var configDB = require("./config/database.js");
+
+var port = process.env.PORT || 81; // Either the env var PORT or 80
+
+//setup db
+mongoose.connect(configDB.url);
+
+// Passport
+require('./config/passport')(passport)
 
 //setup file watcher
 var watcher = chokidar.watch(path.join(__dirname, 'csvs'), {
@@ -14,20 +32,34 @@ var log = console.log.bind(console);
 //run initial python code
 
 
-//setup server
+//setup server static
+
 app = express();
-var serveDir = path.join(__dirname, 'public'); 
+var serveDir = path.join(__dirname, 'csvs'); 
 app.use(express.static(serveDir));
-var port = 81; // Change this
+
+app.use(morgan('dev')); // log requests to stdout
+app.use(cookieParser()); // read cookies
+app.use(bodyParser()); // get info from html forms
+
+app.set('view engine', 'ejs'); //use ejs for templating
+
+//pasport setup
+app.use(session({ secret: 'STAIRS!? NOOOOOOOOOOOOO!'}));
+app.use(passport.initialize());
+app.use(passport.session()); //persistent login
+app.use(flash()); // use connect-flash
+
+require('./app/routes.js')(app, passport); //load routes and pass into app and passport
 
 //start listening
 app.listen(port);
 console.log('Server running on port ' + port);
-console.log('Serving all files in directory '+serveDir+'');
+//console.log('Serving all files in directory '+serveDir+'');
 
 /*  This generates HTML that will display in browser listing all CSV files */
 function getAllCSVs(){
-	var files = fs.readdirSync('../sampleData');
+	var files = fs.readdirSync('csvs');
 	var dropdownModule = "";
 	for(i = 0; i < files.length; i++){
 		var option = "\n<li>" + files[i] + "</li>";
