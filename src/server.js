@@ -17,7 +17,7 @@ var spawn = require("child_process").spawn;
 
 //constants
 var port = process.env.PORT || 80; // Either the env var PORT or 80
-var ehabd_path = path.join(__dirname, '../ehabd_scripts/ehabdReduction.py');
+var ehabd_path = path.join(__dirname, 'ehabd_scripts/ehabdReduction.py');
 
 //setup db
 mongoose.connect(configDB.url);
