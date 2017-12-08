@@ -103,7 +103,7 @@ def tSNE():
 	plt.axis('tight')
 
 def save():
-	plt.savefig("svgs/test.svg")
+	plt.savefig("svgs/" + sys.argv[2].split("/")[1].split(".")[0])
 
 if sys.argv[1] == "mds":
 	mds()
