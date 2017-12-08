@@ -193,6 +193,30 @@
 			</script>
 			
 		</div>
+	<div class="row">
+		<div id="ehabd" class="well">
+			<script>
+				function getEHABD(){
+				var csv_name = window.location.href.split("?")[1]
+				if(csv_name != undefined){
+					var ehabd_name = csv_name.split(".")[0] + ".ehabd.svg";
+					$("#ehabd").load("svgs/" + ehabd_name, 
+						function (responseText, textStatus, XMLHttpRequest) {
+   							console.log("Request successful!");
+							return true;
+			  			});
+						return false;
+					}
+					return true;
+				}
+				var display = getEHABD();
+				console.log("display: " + display);
+				if(!display){
+					document.getElementById("ehabd").innerHTML = "<img src=\"http://www.wallies.com/filebin/images/loading_apple.gif\" width=\"120\" class=\"mid\">\n<h3 align=\"middle\">Please wait while the reduction is generated. Check back soon!</h3>\n</div>"
+				}
+			</script>
+		</div>
+	</div>
 </body>
 
 <script>
