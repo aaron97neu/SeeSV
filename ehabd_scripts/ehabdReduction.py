@@ -1,12 +1,19 @@
 import sys
+import matplotlib
+matplotlib.use('svg')
+import matplotlib.pyplot as plt
 import math
 
 #global variables
 numPoints = 0
 features = 0
 inputTextFile = sys.argv[1]
-distThresh = 10000
+
+distThresh = -1
 radius = distThresh
+
+percent = 30.0/100.0
+
 data = open(inputTextFile)
 
 #Takes a string of format value1,value2,value3 and returns an array with values of deisred features
@@ -24,22 +31,41 @@ def distance(point1, point2):
 #Get pointDataString in correct format?
 def prime():
 	global data, numPoints, features
-	data.readline()
-	pointDataString = data.readline()
-	maxRange = int(pointDataString.split(",")[1])
+	infophile = open("formated/" + sys.argv[1].split("/")[1].split(".")[0] + ".format.csv",'r')
+	dataWay = infophile.readline()
+	maxRange = int(dataWay.split(":")[1])
 	numPoints = maxRange
-	features = int(pointDataString.split(",")[0])
-	data.seek(0)	
+	features = int(dataWay.split(":")[0])
 
 #Get all data points as an array from file
 def getAllPoints(feature1,feature2):
-	global numPoints, pointDataString, data
+	global numPoints, pointDataString, data, distThresh, radius, percent
 	setOfAll = []
-	data.readline()
 	dataString = data.readline()
+	try:
+		float(dataString.split(",")[0])
+	except:
+		dataString = data.readline()
 	while dataString != "":
 		setOfAll.append(Parse(dataString,feature1,feature2))
 		dataString = data.readline()
+
+	#Get max X and Y
+	Xhigh = float(setOfAll[0][0])
+	Yhigh = float(setOfAll[0][1])
+	Xlow = float(setOfAll[0][0])
+	Ylow = float(setOfAll[0][1])
+	for point in setOfAll:
+		if float(point[0]) > Xhigh:
+			Xhigh = float(point[0])
+		elif float(point[0]) < Xlow:
+			Xlow = float(point[0])
+		if float(point[1]) > Yhigh:
+			Yhigh = float(point[1])
+		elif float(point[1]) < Ylow:
+			Ylow = float(point[1])
+	distThresh = distance([(Xhigh-Xlow)*percent,(Yhigh-Ylow)*percent],[0,0])
+	radius = distThresh
 	return setOfAll
 
 
@@ -47,7 +73,7 @@ def getAllPoints(feature1,feature2):
 def rankAll(points):
 	rankedPointz = []
 	for point in points:
-		print "Running rank for point " + str(point[0]) + "..."
+		print("Running rank for point " + str(point[0]) + "...")
 		numNeighbors = 0
 		for point2 in points:
 			if point != point2 and distance(point,point2) < distThresh:
@@ -59,7 +85,7 @@ def rankAll(points):
 
 #legacy
 def sortList(points):
-	print "Filtering List"
+	print("Filtering List")
 	ranked_points = []
 	ranked_points.append(points[0])
 	for point in points:
@@ -67,13 +93,13 @@ def sortList(points):
 		for i in range(0,len(ranked_points)):
 			if distance(point,ranked_points[i]) > radius:
 				ranked_points.insert(i, point)
-				print "Inserting " + point[0] + ": value=" + str(point[2]) +": At position " + str(i)
+				print("Inserting " + point[0] + ": value=" + str(point[2]) +": At position " + str(i))
 				insert = True
 				break
 			elif point[2] > ranked_points[i][2]:
 				ranked_points.remove(ranked_points[i])
 				ranked_points.insert(i,point)
-				print "Replacing"
+				print("Replacing")
 				break
 	return ranked_points
 
@@ -84,12 +110,13 @@ def reduce(points,feature1,feature2):
 	for point in points:
 		nah = True
 		for newPoint in newPointList:
-			if (point[2] <= newPoint[2] and distance(newPoint,point) < radius) or point[2] < 10:
+			if (point[2] <= newPoint[2] and distance(newPoint,point) < radius):# or point[2] < 10:
 				nah = False
 		if nah:
 			newPointList.append(point)
 	return newPointList
 
+#Make the array of reduced points
 prime()
 #Actually do stuff
 finin = []
@@ -105,24 +132,33 @@ for i in range(0,features):
 			print(str(i),str(j),len(finin[i]))
 			print(finin[i])
 
+#Make the .ehabd file
 inputFileName = inputTextFile.split("/")
 inputFileName = inputFileName[len(inputFileName)-1]
 inputFileName = inputFileName.split(".")[0]
+plt.figure(figsize=(50, 50))
 output = open("EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
+	plt.subplot(features,features,i*10+j)
+	plt.plot(finin[i],'ro')
 	for j in range(i,features):
 		if i != j:
 			output.write(str(i) + ":" + str(j) + ":" + str(len(finin[i])))
-			if i != features - 2:
-				output.write(",")
-			else:
-				output.write("\n")
-for i in range(0,len(finin)):
-	for j in range(0,len(finin[i])):
-		for k in range(0,len(finin)):
-			if j < len(finin[k]):
-				output.write(str(finin[k][j][0]) + ";" + str(finin[k][j][1]))
-		output.write('\n')
+			output.write("\n")
+			for k in range(0,int(len(finin[i]))):
+				output.write(str(finin[i][k][0]) + ";" + str(finin[i][k][1].split("\r\n")[0]) + "||")
+			output.write('\n')
+
+#for i in range(0,len(finin)):
+#	for j in range(0,len(finin[i])):
+#		for k in range(0,len(finin)):
+#			if j < len(finin[k]):
+#				output.write(str(finin[k][j][0]) + ";" + str(finin[k][j][1]))
+#		output.write('\n')
+
+
+plt.savefig("svgs/" + sys.argv[1].split("/")[1].split(".")[0] + ".ehabd.svg")
+print("done")
 
 def findAndPlot():
         list = rankAll()
@@ -133,12 +169,3 @@ def findAndPlot():
 """
 --------Test Methods-------
 """
-
-#test parse
-def testParse():
-	pointDataString = data.readline()
-	print pointDataString
-	while pointDataString != None:
-		print Parse(pointDataString)
-		data.readline()
-		pointDataString = data.readline()
