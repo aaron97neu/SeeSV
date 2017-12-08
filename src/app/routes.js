@@ -17,7 +17,7 @@ module.exports = function(app, passport){
     var fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
 	    if (err) {
-          console.log(err);
+          //console.log(err);
         } else {
           console.log('Sent:', fileName);
         }
@@ -37,7 +37,7 @@ module.exports = function(app, passport){
     var fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
 	    if (err) {
-          console.log(err);
+          //console.log(err);
         } else {
           console.log('Sent:', fileName);
         }

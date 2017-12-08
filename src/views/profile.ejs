@@ -85,6 +85,16 @@
         	padding-bottom: 5px;
         }
         
+        .graphbox {
+        	height: 200px;
+            width: 200px;
+        }
+
+       .mid {
+    		display: block;
+    		margin: 0 auto;
+    	}
+
         .dropdown a:hover {background-color: #f1f1f1}
         
         .show {display:block;}
@@ -115,15 +125,14 @@
 					</div>
     			</div>
 	
-			<form ref="upldfm" id="upldfm" action="fileupload" method="post" enctype="multipart/form-data" class="inln">
+			<form action="/" class="inln">
     			<div class="choose-file">
-  					<input type="file" name="csvupload" accept=".csv" class="upload-blocks">
+  					<input type="file" name="csv-upload" accept=".csv" class="upload-blocks">
 				</div>
         		<input type="submit" class="submit">
 			</form>
     	</div>
             <div class="well">
-            
                 <h3><span class="fa fa-user"></span> Local</h3>
                     <p>
                     	<strong>id</strong>: <%= user._id %><br>
@@ -137,26 +146,53 @@
 				<div id="graph"></div>
 				<script type="text/javascript">
 					var csv_name = window.location.href.split("?")[1]
-					g = new Dygraph(
-
-				    // containing div
-					document.getElementById("graph"),
-					
-					"csvs/" + csv_name,
-					
-					{
-						legend: 'always',
-						strokeWidth: 0.0,
-						drawPoints: true
+					if(csv_name == undefined){
+						document.getElementById("graph").innerHTML = "<div id=\"graph\" class=\"graphbox\"></div>\n\t\t\t\t\t\t<h3 align=\"center\">Please select a CSV!</h3>\n\t\t\t\t</div>";
 					}
-				    );
+					else{	
+						g = new Dygraph(
+
+					    // containing div
+						document.getElementById("graph"),
+						
+						"csvs/" + csv_name,
+					
+						{
+							legend: 'always',
+							strokeWidth: 0.0,
+							drawPoints: true
+						}
+				    	);
+					}
 				</script>
 			</div>
 		</div>
     </div>
 	<div class="row">
-		<div class="well"><img src="svgs/test.svg" width="1130"></div>
-	</div>
+		<div id="manifold" class="well">
+			<script>
+				function getManifold(){
+					var csv_name = window.location.href.split("?")[1]
+					if(csv_name != undefined){
+						var svg_name = csv_name.split(".")[0] + ".svg";
+						console.log("About to do the manifold!");
+						$("#manifold").load("svgs/" + svg_name, 
+							function (responseText, textStatus, XMLHttpRequest) {
+    							console.log("Request successful!");
+								return true;
+				  			});
+						return false;
+					}
+					return true;
+				}
+				var display = getManifold();
+				console.log("display: " + display);
+				if(!display){
+					document.getElementById("manifold").innerHTML = "<img src=\"http://www.wallies.com/filebin/images/loading_apple.gif\" width=\"120\" class=\"mid\">\n<h3 align=\"middle\">Please wait while the manifold is generated. Check back soon!</h3>\n</div>"
+				}
+			</script>
+			
+		</div>
 </body>
 
 <script>
@@ -165,6 +201,9 @@ toggle between hiding and showing the dropdown content */
 function myFunction() {
     document.getElementById("CSVdropdown").classList.toggle("show");
 }
+
+//Returns true if it found the image, false otherwise
+
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {

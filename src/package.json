@@ -4,7 +4,7 @@
   "description": "The purpose of SeeSV is to parse and analyze large data files used for machine learning, and display statistics about the datasets in a multiplatform webclient.",
   "main": "server.js",
   "dependencies": {
-    "bcrypt-nodejs": "latest",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.2",
     "chokidar": "^1.7.0",
     "connect-flash": "~0.1.1",
