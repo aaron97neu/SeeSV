@@ -38,8 +38,11 @@ app = express();
 /*var serveDir = path.join(__dirname, 'public'); 
 app.use(express.static(serveDir));
 <<<<<<< HEAD
+<<<<<<< HEAD
 var port = 82; // Change this
 =======
+=======
+>>>>>>> 151e4e8275db35bb6bbde2db5a970ad5128b4aeb
 */
 
 app.use(morgan('dev')); // log requests to stdout
@@ -55,7 +58,10 @@ app.use(passport.session()); //persistent login
 app.use(flash()); // use connect-flash
 
 require('./app/routes.js')(app, passport); //load routes and pass into app and passport
+<<<<<<< HEAD
 >>>>>>> ehabd
+=======
+>>>>>>> 151e4e8275db35bb6bbde2db5a970ad5128b4aeb
 
 //start listening
 app.listen(port);
