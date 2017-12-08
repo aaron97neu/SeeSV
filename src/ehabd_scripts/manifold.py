@@ -112,7 +112,7 @@ def tSNE():
 
 def save():
 	open(svgName + ".svg",'w+')
-	plt.savefig(svgName + ".svg")
+	plt.savefig(svgName + ".svg",pad_inches=0,bbox_inches="tight")
 
 def part2(form):
 	if form == "mds":

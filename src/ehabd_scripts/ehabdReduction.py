@@ -148,7 +148,7 @@ for i in range(0,features):
 inputFileName = inputTextFile.split("/")
 inputFileName = inputFileName[len(inputFileName)-1]
 inputFileName = inputFileName.split(".")[0]
-f, axes = plt.subplots(features, features, figsize=(50,50))
+f, axes = plt.subplots(features, features, figsize=(5*features,5*features))
 output = open(outputPath + "EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
 	for j in range(0,features):
@@ -171,7 +171,7 @@ for i in range(0,features):
 fileName = sys.argv[1].split("/")
 fileName = fileName[len(fileName) - 1]
 fileName = fileName.split(".")[0]
-plt.savefig(svgPath + fileName + ".ehabd.svg")
+plt.savefig(svgPath + fileName + ".ehabd.svg",pad_inches=0,bbox_inches="tight")
 
 
 spec = importlib.util.spec_from_file_location("ehabd_scripts.manifold", outputPath + "manifold.py")
