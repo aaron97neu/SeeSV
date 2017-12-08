@@ -13,8 +13,11 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 
 var configDB = require("./config/database.js");
+var spawn = require("child_process").spawn;
 
-var port = 82;//process.env.PORT || 82; // Either the env var PORT or 80
+//constants
+var port = process.env.PORT || 80; // Either the env var PORT or 80
+var ehabd_path = path.join(__dirname, '../ehabd_scripts/ehabdReduction.py');
 
 //setup db
 mongoose.connect(configDB.url);
@@ -75,6 +78,11 @@ app.get('/csvload', function(req, res){
   res.end();
 });
 
+// Evan's pyscript promise
+/*let ehr = new Promise(function(success, nosuccess) {
+  const {spawn} = require('child_process');
+  const py = spawn('python',[path.join(ehabd_path,'ehabdReduction.py'), path.join(__dirname, )]);
+});*/
 
 //setup event listeners
 watcher
@@ -83,7 +91,17 @@ watcher
     ready = 1;
   })
   .on('error', error => log(`Watcher error: ${error}`))
-  .on('add', path => log(`File ${path} has been added`))
+  .on('add', pathToFile => {
+    log(`File ${pathToFile} has been added`);
+    console.log('Running '+ehabd_path+' '+pathToFile);
+    var ehabd = spawn('python3',[ehabd_path, pathToFile]);
+    ehabd.stdout.on('data', function (data){
+      if(data.toString().trim() === 'done'){
+	console.log("Finished running ehabdReduction on "+path);
+      }
+    });
+    
+  })
   .on('change', path => log(`File ${path} has been changed`))
   .on('unlink', path => log(`File ${path} has been removed`));
 
