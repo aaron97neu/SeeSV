@@ -21,7 +21,7 @@ def Parse(s,feature1,feature2):
 	tem = s.split(",")
 	ohNaNa = []
 	ohNaNa.append(tem[feature1])
-	ohNaNa.append(tem[feature2])
+	ohNaNa.append(tem[feature2].split("\n")[0])
 	return ohNaNa
 
 #Calculates distance between two points
@@ -139,10 +139,10 @@ inputFileName = inputFileName.split(".")[0]
 plt.figure(figsize=(50, 50))
 output = open("EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
-	plt.subplot(features,features,i*10+j)
-	plt.plot(finin[i],'ro')
 	for j in range(i,features):
 		if i != j:
+			plt.subplot(features,features,10*i + j)
+			plt.plot(finin[i],'ro')
 			output.write(str(i) + ":" + str(j) + ":" + str(len(finin[i])))
 			output.write("\n")
 			for k in range(0,int(len(finin[i]))):
