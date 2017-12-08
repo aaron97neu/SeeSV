@@ -85,6 +85,10 @@
         	padding-bottom: 5px;
         }
         
+        .graphbox {
+        	height: 200px;
+            width: 200px;
+        }
         .dropdown a:hover {background-color: #f1f1f1}
         
         .show {display:block;}
@@ -115,7 +119,7 @@
 					</div>
     			</div>
 	
-			<form action="/action_page.php" class="inln">
+			<form action="/" class="inln">
     			<div class="choose-file">
   					<input type="file" name="csv-upload" accept=".csv" class="upload-blocks">
 				</div>
@@ -123,7 +127,6 @@
 			</form>
     	</div>
             <div class="well">
-            
                 <h3><span class="fa fa-user"></span> Local</h3>
                     <p>
                     	<strong>id</strong>: <%= user._id %><br>
@@ -137,19 +140,24 @@
 				<div id="graph"></div>
 				<script type="text/javascript">
 					var csv_name = window.location.href.split("?")[1]
-					g = new Dygraph(
-
-				    // containing div
-					document.getElementById("graph"),
-					
-					"csvs/" + csv_name,
-					
-					{
-						legend: 'always',
-						strokeWidth: 0.0,
-						drawPoints: true
+					if(csv_name == undefined){
+						document.getElementById("graph").innerHTML = "<div id=\"graph\" class=\"graphbox\"></div>\n\t\t\t\t\t\t<h3 align=\"center\">Please select a CSV!</h3>\n\t\t\t\t</div>";
 					}
-				    );
+					else{	
+						g = new Dygraph(
+
+					    // containing div
+						document.getElementById("graph"),
+						
+						"csvs/" + csv_name,
+					
+						{
+							legend: 'always',
+							strokeWidth: 0.0,
+							drawPoints: true
+						}
+				    	);
+					}
 				</script>
 			</div>
 		</div>

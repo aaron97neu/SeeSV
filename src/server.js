@@ -77,8 +77,9 @@ function returnDygraph(filename){
 
 /*  Frontend queries /csvload to get the CSV list*/
 app.get('/csvload', function(req, res){
-  res.send(getAllCSVs());
-  res.end();
+	var module = getAllCSVs();
+	res.send(getAllCSVs());
+	res.end();
 });
 
 /* This is what is queried for specific stuff re */
