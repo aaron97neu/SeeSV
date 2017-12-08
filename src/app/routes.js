@@ -17,15 +17,15 @@ module.exports = function(app, passport){
     var fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
 	    if (err) {
-          //console.log(err);
+          console.log(err);
         } else {
           console.log('Sent:', fileName);
         }
      });
-});
+  });
 
-//Serves SVG files
-app.get('/svgs/:name', function(req, res) {
+  //Serves SVG files
+  app.get('/svgs/:name', function(req, res) {
     var options = {
       root: __dirname + '/../svgs/',
       dotfiles: 'deny',
@@ -37,12 +37,29 @@ app.get('/svgs/:name', function(req, res) {
     var fileName = req.params.name;
       res.sendFile(fileName, options, function (err) {
 	    if (err) {
-          //console.log(err);
+          console.log(err);
         } else {
           console.log('Sent:', fileName);
         }
      });
-});
+  });
+
+  //file upload
+  app.post('/fileupload', function(req, res) {
+    var path = require("path");
+    if (!req.files)
+      return res.status(400).send('No files were uploaded.');
+    let csvupload = req.files.csvupload;
+
+    csvupload.mv(path.join(__dirname, '../csvs',req.files.csvupload.name), function(err) {
+      if (err)
+        return res.status(500).send(err);
+       
+      //res.send('File uploaded!');
+      //req.flash('info','File uploaded successfully');
+      res.redirect('/profile')
+    });
+  });
 
   // Login form
   app.get('/login', function(req, res) {

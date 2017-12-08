@@ -11,14 +11,11 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
+var fileUpload = require("express-fileupload");
 
 var configDB = require("./config/database.js");
 
-<<<<<<< Updated upstream
 var port = process.env.PORT || 80; // Either the env var PORT or 80
-=======
-var port = process.env.PORT || 82; // Either the env var PORT or 80
->>>>>>> Stashed changes
 
 //setup db
 mongoose.connect(configDB.url);
@@ -41,14 +38,14 @@ var log = console.log.bind(console);
 //setup server static
 
 app = express();
-var serveDir = path.join(__dirname, 'csvs'); 
-app.use(express.static(serveDir));
 
 app.use(morgan('dev')); // log requests to stdout
 app.use(cookieParser()); // read cookies
 app.use(bodyParser()); // get info from html forms
 
 app.set('view engine', 'ejs'); //use ejs for templating
+
+app.use(fileUpload());
 
 //pasport setup
 app.use(session({ secret: 'STAIRS!? NOOOOOOOOOOOOO!'}));
