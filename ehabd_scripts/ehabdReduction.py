@@ -121,28 +121,27 @@ prime()
 #Actually do stuff
 finin = []
 for i in range(0,features):
-	for j in range(i,features):
+	for j in range(0,features):
 		if i != j:
 			finin.append(reduce(sortList(rankAll(getAllPoints(i,j))),i,j))
 			data.seek(0)
 
 for i in range(0,features):
-	for j in range(i,features):
+	for j in range(0,features):
 		if i != j:
 			print(str(i),str(j),len(finin[i]))
-			print(finin[i])
+			print(finin[i*(features-1)+j])
 
 #Make the .ehabd file
 inputFileName = inputTextFile.split("/")
 inputFileName = inputFileName[len(inputFileName)-1]
 inputFileName = inputFileName.split(".")[0]
-plt.figure(figsize=(50, 50))
+f, axes = plt.subplots(features, features, figsize=(50,50))
 output = open("EHABD_Files/" + inputFileName + ".ehabd","w+")
 for i in range(0,features):
-	for j in range(i,features):
+	for j in range(0,features):
 		if i != j:
-			plt.subplot(features,features,10*i + j)
-			plt.plot(finin[i],'ro')
+			axes[i,j].plot(finin[i*(features-1)+j],'ro')
 			output.write(str(i) + ":" + str(j) + ":" + str(len(finin[i])))
 			output.write("\n")
 			for k in range(0,int(len(finin[i]))):
