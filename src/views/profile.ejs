@@ -89,6 +89,12 @@
         	height: 200px;
             width: 200px;
         }
+
+       .mid {
+    		display: block;
+    		margin: 0 auto;
+    	}
+
         .dropdown a:hover {background-color: #f1f1f1}
         
         .show {display:block;}
@@ -165,25 +171,27 @@
 	<div class="row">
 		<div id="manifold" class="well">
 			<script>
-				var csv_name = window.location.href.split("?")[1]
-				if(csv_name != undefined){
-					var svg_name = csv_name.split(".")[0] + ".svg";
-					$("#links").load("/Main_Page #jq-p-Getting-Started li", 
-						function (responseText, textStatus, XMLHttpRequest) {
-    						if (textStatus == "success") {
-    							//all is well
-							}
-    						if (textStatus == "error") {
-         						// oh no!
-    						}
-  						}
-					var file = $("#manifold").load("svgs/" + svg_name);
-					console.log(file);
+				function getManifold(){
+					var csv_name = window.location.href.split("?")[1]
+					if(csv_name != undefined){
+						var svg_name = csv_name.split(".")[0] + ".svg";
+						console.log("About to do the manifold!");
+						$("#manifold").load("svgs/" + svg_name, 
+							function (responseText, textStatus, XMLHttpRequest) {
+    							console.log("Request successful!");
+								return true;
+				  			});
+						return false;
+					}
+					return true;
+				}
+				var display = getManifold();
+				console.log("display: " + display);
+				if(!display){
+					document.getElementById("manifold").innerHTML = "<img src=\"http://www.wallies.com/filebin/images/loading_apple.gif\" width=\"120\" class=\"mid\">\n<h3 align=\"middle\">Please wait while the manifold is generated. Check back soon!</h3>\n</div>"
 				}
 			</script>
-			<!--<img src="http://www.wallies.com/filebin/images/loading_apple.gif" width="120" class="mid">
-            <h3 align="middle">Please wait while the reduction is generated. Check back soon!</h3>
-			<img src="svgs/test.svg" width="1130"></div>-->
+			
 		</div>
 </body>
 
@@ -193,6 +201,9 @@ toggle between hiding and showing the dropdown content */
 function myFunction() {
     document.getElementById("CSVdropdown").classList.toggle("show");
 }
+
+//Returns true if it found the image, false otherwise
+
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
